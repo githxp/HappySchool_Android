@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--标题栏布局高度-->
+    <dimen name="titleLayoutHeight_xhdpi">64dp</dimen>
+    <!--标题栏文字-->
+    <dimen name="titleText_xhdpi">22sp</dimen>
+    <!--标题栏图标长宽-->
+    <dimen name="titleImg_xhdpi">48dp</dimen>
+    <!--模块栏布局高度-->
+    <dimen name="moduleLayoutHeight_xhdpi">48dp</dimen>
+    <!--模块栏文字-->
+    <dimen name="moduleText_xhdpi">18sp</dimen>
+    <!--模块栏RecycleView高度-->
+    <dimen name="moduleReviewHeight_xhdpi">36dp</dimen>
+    <!--模块栏RecycleView外上边距-->
+    <dimen name="moduleReviewMarginTop_xhdpi">2dp</dimen>
+    <!--模块选择栏RecycleView外下边距-->
+    <dimen name="moduleReviewMarginButtom_xhdpi">2dp</dimen>
+    <!--模块栏按钮外左边距-->
+    <dimen name="moduleBtnMarginLeft">0dp</dimen>
+    <!--模块栏按钮外右边距-->
+    <dimen name="moduleBtnMarginRight">8dp</dimen>
+    <!--模块栏按钮文字-->
+    <dimen name="moduleBtnTextsize">18sp</dimen>
+
+</resources>

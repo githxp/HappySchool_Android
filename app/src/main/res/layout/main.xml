@@ -1,6 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/titleLayoutHeight_xhdpi"
+        android:background="@color/Primary"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/imgbtn_person_main"
+            android:layout_width="@dimen/titleImg_xhdpi"
+            android:layout_height="@dimen/titleImg_xhdpi"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/alpha0"
+            android:src="@drawable/ic_menu_setting" />
+
+        <TextView
+            android:id="@+id/tvTitle_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/app_name"
+            android:textColor="@color/Title"
+            android:textSize="@dimen/titleText_xhdpi" />
+
+        <ImageButton
+            android:id="@+id/imgbtn_setting_main"
+            android:layout_width="@dimen/titleImg_xhdpi"
+            android:layout_height="@dimen/titleImg_xhdpi"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/alpha0"
+            android:src="@drawable/ic_menu_person" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/moduleLayoutHeight_xhdpi">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvModule_main"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/moduleReviewHeight_xhdpi"
+            android:layout_marginBottom="@dimen/moduleReviewMarginButtom_xhdpi"
+            android:layout_marginTop="@dimen/moduleReviewMarginTop_xhdpi" />
+
+
+    </RelativeLayout>
 </LinearLayout>
