@@ -14,13 +14,23 @@ import android.widget.Toast;
 
 import com.hxp.happyschool.R;
 import com.hxp.happyschool.adapters.ModuleAdapter_main;
+import com.hxp.happyschool.fragments.CateryFragment;
+import com.hxp.happyschool.fragments.ClassTableFragment;
+import com.hxp.happyschool.fragments.ClassUnionFragment;
+import com.hxp.happyschool.fragments.ExamFragment;
+import com.hxp.happyschool.fragments.HotnewsFragment;
+import com.hxp.happyschool.fragments.LeaderFragment;
+import com.hxp.happyschool.fragments.LibraryFragment;
+import com.hxp.happyschool.fragments.ScoreFragment;
+import com.hxp.happyschool.fragments.WebLogFragment;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * App主活动
  */
-public class MainActivity extends Activity implements OnClickListener{
+public class MainActivity extends Activity implements OnClickListener {
 
 
     //获取控件和设置成员变量
@@ -46,13 +56,21 @@ public class MainActivity extends Activity implements OnClickListener{
 
         //为模块栏绑定适配器
         initAdapter();
+
+
+        //为模块栏按钮绑定事件侦听
+        onBindClickListener();
+
+
+        //Fragment左右滑动切换
+        fragmentSwitch();
     }
 
 
     //实现OnclickListener接口方法
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.imgbtn_person_main:
                 Toast.makeText(MainActivity.this, "个人中心正在开发中", Toast.LENGTH_SHORT).show();
                 break;
@@ -79,7 +97,7 @@ public class MainActivity extends Activity implements OnClickListener{
 
 
     //定义初始化数据集方法
-    private void initDatas(){
+    private void initDatas() {
 
         String strClassUnion = "课堂";
         String strClassTable = "课表";
@@ -89,7 +107,7 @@ public class MainActivity extends Activity implements OnClickListener{
         String strWeblog = "微博";
         String strLibrary = "书馆";
         String strExam = "考场";
-        String strScore = "课堂";
+        String strScore = "成绩";
 
         listModuleDatas.add(strClassUnion);
         listModuleDatas.add(strClassTable);
@@ -109,5 +127,85 @@ public class MainActivity extends Activity implements OnClickListener{
         rvModule_main.setAdapter(moduleAdapter_main);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvModule_main.setLayoutManager(mLinearLayoutManager);
+    }
+
+
+    //定义模块栏按钮绑定事件侦听方法
+    private void onBindClickListener() {
+        moduleAdapter_main.setOnItemClickListener(new ModuleAdapter_main.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int positon) {
+                switch (positon) {
+                    case 0:
+                        Toast.makeText(MainActivity.this, "ok", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case 1:
+                        getFragmentManager().beginTransaction()
+                                .addToBackStack(null)
+                                .replace(R.id.fragment_classUnion, new ClassTableFragment())
+                                .commit();
+                        break;
+
+                    case 2:
+                        getFragmentManager().beginTransaction()
+                                .addToBackStack(null)
+                                .replace(R.id.main, new LeaderFragment())
+                                .commit();
+                        break;
+
+                    case 3:
+                        getFragmentManager().beginTransaction()
+                                .addToBackStack(null)
+                                .replace(R.id.main, new CateryFragment())
+                                .commit();
+                        break;
+
+                    case 4:
+                        getFragmentManager().beginTransaction()
+                                .addToBackStack(null)
+                                .replace(R.id.main, new HotnewsFragment())
+                                .commit();
+                        break;
+
+                    case 5:
+                        getFragmentManager().beginTransaction()
+                                .addToBackStack(null)
+                                .replace(R.id.main, new WebLogFragment())
+                                .commit();
+                        break;
+
+                    case 6:
+                        getFragmentManager().beginTransaction()
+                                .addToBackStack(null)
+                                .replace(R.id.main, new LibraryFragment())
+                                .commit();
+                        break;
+
+                    case 7:
+                        getFragmentManager().beginTransaction()
+                                .addToBackStack(null)
+                                .replace(R.id.main, new ExamFragment())
+                                .commit();
+                        break;
+
+                    case 8:
+                        getFragmentManager().beginTransaction()
+                                .addToBackStack(null)
+                                .replace(R.id.main, new ScoreFragment())
+                                .commit();
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        });
+    }
+
+
+    //定义左右滑动切换Fragment方法
+    private void fragmentSwitch() {
+
     }
 }

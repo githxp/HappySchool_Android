@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -42,6 +44,7 @@
 
     </RelativeLayout>
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/moduleLayoutHeight_xhdpi">
@@ -52,7 +55,12 @@
             android:layout_height="@dimen/moduleReviewHeight_xhdpi"
             android:layout_marginBottom="@dimen/moduleReviewMarginButtom_xhdpi"
             android:layout_marginTop="@dimen/moduleReviewMarginTop_xhdpi" />
-
-
     </RelativeLayout>
+
+
+    <fragment
+        android:name="com.hxp.happyschool.fragments.ClassUnionFragment"
+        android:id="@+id/fragment_classUnion"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
