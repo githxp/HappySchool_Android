@@ -7,20 +7,14 @@
     <!--标题栏图标长宽-->
     <dimen name="titleImg_xhdpi">48dp</dimen>
     <!--模块栏布局高度-->
-    <dimen name="moduleLayoutHeight_xhdpi">48dp</dimen>
+    <dimen name="tabLayoutHeight_xhdpi">46dp</dimen>
     <!--模块栏文字-->
-    <dimen name="moduleText_xhdpi">18sp</dimen>
-    <!--模块栏RecycleView高度-->
-    <dimen name="moduleReviewHeight_xhdpi">36dp</dimen>
-    <!--模块栏RecycleView外上边距-->
-    <dimen name="moduleReviewMarginTop_xhdpi">2dp</dimen>
-    <!--模块选择栏RecycleView外下边距-->
-    <dimen name="moduleReviewMarginButtom_xhdpi">2dp</dimen>
+    <dimen name="tabText_xhdpi">18sp</dimen>
     <!--模块栏按钮外左边距-->
-    <dimen name="moduleBtnMarginLeft">0dp</dimen>
+    <dimen name="tabBtnMarginLeft">0dp</dimen>
     <!--模块栏按钮外右边距-->
-    <dimen name="moduleBtnMarginRight">8dp</dimen>
+    <dimen name="tabBtnMarginRight">8dp</dimen>
     <!--模块栏按钮文字-->
-    <dimen name="moduleBtnTextsize">18sp</dimen>
+    <dimen name="tabBtnTextsize">18sp</dimen>
 
 </resources>

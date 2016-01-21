@@ -12,7 +12,7 @@ import com.hxp.happyschool.R;
 /**
  * Created by hxp on 16-1-20.
  */
-public class HotnewsFragment extends Fragment {
+public class HotNewsFragment extends Fragment {
 
 
     @Nullable

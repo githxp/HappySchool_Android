@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#11CD6E</color>
 
-    <color name="Title">#FFFFFF</color>
-    <color name="Primary">#56ABE4</color>
-    <color name="Second">#FFFFFF</color>
+    <color name="title">#FFFFFF</color>
+
+    <color name="primaryBlue">#56ABE4</color>
+    <color name="primaryGreen">#11CD6E</color>
+
+    <color name="second">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="taboutText">#3F3F3F</color>
     <color name="alpha0">#00000000</color>
+    <color name="backgroundGrey">#F5F5F5</color>
 </resources>
