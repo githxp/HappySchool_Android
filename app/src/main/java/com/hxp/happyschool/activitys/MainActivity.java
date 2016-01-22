@@ -21,7 +21,9 @@ import com.hxp.happyschool.fragments.ExamFragment;
 import com.hxp.happyschool.fragments.HotNewsFragment;
 import com.hxp.happyschool.fragments.LeaderFragment;
 import com.hxp.happyschool.fragments.LibraryFragment;
+import com.hxp.happyschool.fragments.PersonFragment;
 import com.hxp.happyschool.fragments.ScoreFragment;
+import com.hxp.happyschool.fragments.SettingFragment;
 import com.hxp.happyschool.fragments.WebLogFragment;
 
 import java.util.ArrayList;
@@ -126,11 +128,11 @@ public class MainActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imgbtn_person_main:
-                Toast.makeText(MainActivity.this, "个人中心正在开发中", Toast.LENGTH_SHORT).show();
+                getFragmentManager().beginTransaction().add(R.id.main,new SettingFragment()).commit();
                 break;
 
             case R.id.imgbtn_setting_main:
-                Toast.makeText(MainActivity.this, "控制中心正在开发中", Toast.LENGTH_SHORT).show();
+                getFragmentManager().beginTransaction().add(R.id.main, new PersonFragment()).commit();
                 break;
 
             case R.id.imgbtn_more_main:
