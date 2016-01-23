@@ -18,7 +18,7 @@ public class ClassUnionFragment extends Fragment {
 
     private View view;
 
-    private FloatingActionButton fab;
+    private FloatingActionButton fab_classunion;
 
     @Nullable
     @Override
@@ -30,8 +30,8 @@ public class ClassUnionFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        fab = (FloatingActionButton) getView().findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab_classunion = (FloatingActionButton) getView().findViewById(R.id.fab_classunion);
+        fab_classunion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();

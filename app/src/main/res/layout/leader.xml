@@ -1,12 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
 
     <com.amap.api.maps.MapView
         android:id="@+id/mapViewAmap_leader"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabSearch_leader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:background="@color/alpha0"
+        android:src="@drawable/ic_map_search"
+        app:elevation="10sp"
+        app:layout_anchor="@id/mapViewAmap_leader"
+        app:layout_anchorGravity="bottom|left"
+        app:pressedTranslationZ="12sp"
+        app:rippleColor="@color/primaryBlue" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabNavigation_leader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/alpha0"
+        android:src="@drawable/ic_map_navigation"
+        app:elevation="10sp"
+        app:layout_anchor="@id/mapViewAmap_leader"
+        app:layout_anchorGravity="bottom|center_horizontal"
+        app:pressedTranslationZ="12sp"
+        app:rippleColor="@color/primaryBlue" />
+
+
+</android.support.design.widget.CoordinatorLayout>
+
+
+
+

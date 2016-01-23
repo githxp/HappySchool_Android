@@ -12,13 +12,13 @@
 
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fab_classunion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/alpha0"
         android:src="@drawable/ic_menu_person"
-        app:elevation="30dp"
-        app:pressedTranslationZ="39dp"
-        app:rippleColor="#e324e6" />
+        app:elevation="10sp"
+        app:pressedTranslationZ="15sp"
+        app:rippleColor="@color/primaryGreen" />
 
 </android.support.design.widget.CoordinatorLayout>
