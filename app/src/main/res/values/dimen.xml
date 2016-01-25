@@ -16,5 +16,9 @@
     <dimen name="tabBtnMarginRight">8dp</dimen>
     <!--模块栏按钮文字-->
     <dimen name="tabBtnTextsize">18sp</dimen>
+    <!--wifi定位标题-->
+    <dimen name="title_wifitem_leader_xhdpi">18sp</dimen>
+    <!--wifi定位地址文字-->
+    <dimen name="address_wifitem_leader_xhdpi">16sp</dimen>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.hxp.happyschool.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,9 +23,7 @@ public class ClassTableFragment extends Fragment {
 
 
     private View view;
-    private RecyclerView rvWifi_leader;
-    private WifiAdapter mWifiAdapter;
-    private List<String> mDatas;
+
 
 
     @Nullable
@@ -38,13 +37,6 @@ public class ClassTableFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        rvWifi_leader = (RecyclerView) getView().findViewById(R.id.rvWifi_leader);
-        mDatas = new ArrayList<String>();
-        mDatas.add("1");
-        mDatas.add("2");
-        mWifiAdapter = new WifiAdapter(getActivity(), mDatas);
-        rvWifi_leader.setAdapter(mWifiAdapter);
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvWifi_leader.setLayoutManager(mLinearLayoutManager);
+
     }
 }

@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.hxp.happyschool.R;
+import com.hxp.happyschool.adapters.WifiAdapter;
+import com.hxp.happyschool.beans.WifiBean;
 import com.hxp.happyschool.fragments.CateryFragment;
 import com.hxp.happyschool.fragments.ClassTableFragment;
 import com.hxp.happyschool.fragments.ClassUnionFragment;
@@ -25,6 +27,7 @@ import com.hxp.happyschool.fragments.PersonFragment;
 import com.hxp.happyschool.fragments.ScoreFragment;
 import com.hxp.happyschool.fragments.SettingFragment;
 import com.hxp.happyschool.fragments.WebLogFragment;
+import com.hxp.happyschool.utils.WifiDetecter;
 
 import java.util.ArrayList;
 import java.util.List;

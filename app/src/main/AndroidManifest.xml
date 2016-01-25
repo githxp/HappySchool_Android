@@ -47,6 +47,7 @@
             </intent-filter>
         </activity>
 
+        <service android:name=".services.LeaderService"></service>
         <service android:name="com.amap.api.location.APSService"></service>
     </application>
 

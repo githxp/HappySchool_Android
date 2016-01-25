@@ -1,9 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<TextView
-    android:id="@+id/tv"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tvSsid_leader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/taboutText"
+        android:textSize="@dimen/title_wifitem_leader_xhdpi" />
+
+    <TextView
+        android:id="@+id/tvText_leader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvSsid_leader"
+        android:background="@color/primaryGreen"
+        android:text="@string/address_wifiitem_leader"
+        android:textColor="@color/second"
+        android:textSize="@dimen/address_wifitem_leader_xhdpi" />
+
+    <TextView
+        android:id="@+id/tvAddress_leader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSsid_leader"
+        android:layout_toRightOf="@+id/tvText_leader"
+        android:background="@color/primaryGreen"
+        android:textColor="@color/second"
+        android:textSize="@dimen/address_wifitem_leader_xhdpi" />
+
+    <ImageButton
+        android:id="@+id/imgbtn_mapShow_leader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvAddress_leader"
+        android:layout_alignParentRight="true"
+        android:background="@color/alpha0"
+        android:src="@drawable/ic_leader_mapshow" />
+</RelativeLayout>

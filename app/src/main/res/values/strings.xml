@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">乐校</string>
+    <string name="address_wifiitem_leader">地址:</string>
 </resources>

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hxp.happyschool.R;
+import com.hxp.happyschool.beans.WifiBean;
 
 import java.util.List;
 
@@ -21,12 +22,13 @@ public class WifiAdapter extends Adapter<myViewHolder> {
 
     private LayoutInflater mLayoutInflater;
     private Context mContext;
-    private List<String> mDatas;
+    private List<WifiBean> mBeans;
+    private WifiBean mWifiBean;
 
 
-    public WifiAdapter(Context context, List<String> datas) {
+    public WifiAdapter(Context context, List<WifiBean> beans) {
         this.mContext = context;
-        this.mDatas = datas;
+        this.mBeans = beans;
         mLayoutInflater = LayoutInflater.from(context);
     }
 
@@ -39,21 +41,25 @@ public class WifiAdapter extends Adapter<myViewHolder> {
 
     @Override
     public void onBindViewHolder(myViewHolder holder, int position) {
-        holder.tv.setText(position);
+        mWifiBean = mBeans.get(position);
+        holder.tvSsid_leader.setText(mWifiBean.getSsid());
+        holder.tvAddress_leader.setText(mWifiBean.getAddress());
     }
 
     @Override
     public int getItemCount() {
-        return mDatas.size();
+        return mBeans.size();
     }
 }
 
 class myViewHolder extends ViewHolder {
 
-    TextView tv;
+    TextView tvSsid_leader;
+    TextView tvAddress_leader;
 
     public myViewHolder(View itemView) {
         super(itemView);
-        tv = (TextView) itemView.findViewById(R.id.tv);
+        tvSsid_leader = (TextView) itemView.findViewById(R.id.tvSsid_leader);
+        tvAddress_leader =(TextView) itemView.findViewById(R.id.tvAddress_leader);
     }
 }
