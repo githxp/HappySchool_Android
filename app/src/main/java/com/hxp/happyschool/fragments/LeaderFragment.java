@@ -1,17 +1,23 @@
 package com.hxp.happyschool.fragments;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.wifi.ScanResult;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hxp.happyschool.adapters.WifiAdapter;
@@ -50,14 +56,14 @@ public class LeaderFragment extends Fragment implements AMapLocationListener, Lo
     private AMap mAmap;
     private UiSettings mUiSettings;
     private FloatingActionButton fabSearch_leader;
-    //private FloatingActionButton fabNavigation_leader;
     private DatabaseImplement mDatabaseImplement;
     private RecyclerView rvWifi_leader;
     private Intent mIntent;
     private WifiDetecter mWifiDetecter;
     private WifiAdapter mWifiAdapter;
-    private List<WifiBean> mBeans;
+    private List<WifiBean> mWifiBeanList;
     private List<ScanResult> mWifiList;
+    private ArrayList<String> mMacList;
 
 
     //定位
@@ -96,24 +102,29 @@ public class LeaderFragment extends Fragment implements AMapLocationListener, Lo
         mAMapLocationClientOption = new AMapLocationClientOption();
         //wifi定位
         rvWifi_leader = (RecyclerView) getView().findViewById(R.id.rvWifi_leader);
+        //tvAddress_leader = (TextView) getView().findViewById(R.id.tvAddress_leader);
         mWifiDetecter = new WifiDetecter(getActivity());
-        mBeans = new ArrayList<WifiBean>();
+        mWifiBeanList = new ArrayList<WifiBean>();
         mWifiList = mWifiDetecter.getWifiList();
         for (int i = 0; i < mWifiList.size(); i++) {
             WifiBean mWifiBean = new WifiBean();
             mWifiBean.setSsid(mWifiList.get(i).SSID);
-            mBeans.add(mWifiBean);
+            mWifiBean.setMac(mWifiList.get(i).BSSID);
+            mWifiBeanList.add(mWifiBean);
         }
-        mWifiAdapter = new WifiAdapter(getActivity(), mBeans);
+        mWifiAdapter = new WifiAdapter(getActivity(), mWifiBeanList);
         rvWifi_leader.setAdapter(mWifiAdapter);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvWifi_leader.setLayoutManager(mLinearLayoutManager);
+        mMacList = new ArrayList<String>();
+        for (int k = 0; k < mWifiBeanList.size(); k++) {
+            mMacList.add(mWifiBeanList.get(k).getMac());
+        }
         mIntent = new Intent(getActivity(), LeaderService.class);
         mIntent.setAction("act_mac");
         //将当前wifi参数传递进Intent
-        mIntent.putExtra("extra_mac", mWifiDetecter.getmWifiInfo().getMacAddress());
+        mIntent.putStringArrayListExtra("extra_mac", mMacList);
         getActivity().startService(mIntent);
-        //设置地图/定位属性
         initMap();
     }
 
