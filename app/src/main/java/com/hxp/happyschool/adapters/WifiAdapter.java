@@ -1,7 +1,6 @@
 package com.hxp.happyschool.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -34,7 +33,7 @@ public class WifiAdapter extends Adapter<myViewHolder> {
 
     @Override
     public myViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View mView = mLayoutInflater.inflate(R.layout.wifitem_leader, parent, false);
+        View mView = mLayoutInflater.inflate(R.layout.wifitem_location, parent, false);
         myViewHolder mmyViewHolder = new myViewHolder(mView);
         return mmyViewHolder;
     }
@@ -42,8 +41,9 @@ public class WifiAdapter extends Adapter<myViewHolder> {
     @Override
     public void onBindViewHolder(myViewHolder holder, int position) {
         mWifiBean = mBeans.get(position);
-        holder.tvSsid_leader.setText(mWifiBean.getSsid());
-        holder.tvAddress_leader.setText(mWifiBean.getAddress());
+        holder.tvSsid_location.setText(mWifiBean.getSsid());
+        holder.tvAddress_location.setText(mWifiBean.getAddress());
+        holder.tvDistance_location.setText(mWifiBean.getDistance());
     }
 
     @Override
@@ -54,12 +54,14 @@ public class WifiAdapter extends Adapter<myViewHolder> {
 
 class myViewHolder extends ViewHolder {
 
-    TextView tvSsid_leader;
-    TextView tvAddress_leader;
+    TextView tvSsid_location;
+    TextView tvAddress_location;
+    TextView tvDistance_location;
 
     public myViewHolder(View itemView) {
         super(itemView);
-        tvSsid_leader = (TextView) itemView.findViewById(R.id.tvSsid_leader);
-        tvAddress_leader =(TextView) itemView.findViewById(R.id.tvAddress_leader);
+        tvSsid_location = (TextView) itemView.findViewById(R.id.tvSsid_location);
+        tvAddress_location =(TextView) itemView.findViewById(R.id.tvAddress_location);
+        tvDistance_location = (TextView) itemView.findViewById(R.id.tvDistance_location);
     }
 }

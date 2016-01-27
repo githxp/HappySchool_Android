@@ -1,27 +1,16 @@
 package com.hxp.happyschool.fragments;
 
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
-import android.net.wifi.ScanResult;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
+import android.view.View.OnClickListener;
 
-import com.hxp.happyschool.adapters.WifiAdapter;
-import com.hxp.happyschool.beans.WifiBean;
 import com.hxp.happyschool.databases.DatabaseImplement;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -37,16 +26,11 @@ import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.hxp.happyschool.R;
-import com.hxp.happyschool.services.LeaderService;
-import com.hxp.happyschool.utils.WifiDetecter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by hxp on 16-1-20.
  */
-public class LeaderFragment extends Fragment implements AMapLocationListener, LocationSource, View.OnClickListener {
+public class LeaderFragment extends Fragment implements AMapLocationListener, LocationSource, OnClickListener {
 
 
     //获取控件和设置成员变量
@@ -57,13 +41,6 @@ public class LeaderFragment extends Fragment implements AMapLocationListener, Lo
     private UiSettings mUiSettings;
     private FloatingActionButton fabSearch_leader;
     private DatabaseImplement mDatabaseImplement;
-    private RecyclerView rvWifi_leader;
-    private Intent mIntent;
-    private WifiDetecter mWifiDetecter;
-    private WifiAdapter mWifiAdapter;
-    private List<WifiBean> mWifiBeanList;
-    private List<ScanResult> mWifiList;
-    private ArrayList<String> mMacList;
 
 
     //定位
@@ -78,7 +55,6 @@ public class LeaderFragment extends Fragment implements AMapLocationListener, Lo
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.leader, container, false);
         return view;
-
     }
 
 
@@ -100,31 +76,7 @@ public class LeaderFragment extends Fragment implements AMapLocationListener, Lo
         //定位
         mAMapLocationClient = new AMapLocationClient(getActivity());
         mAMapLocationClientOption = new AMapLocationClientOption();
-        //wifi定位
-        rvWifi_leader = (RecyclerView) getView().findViewById(R.id.rvWifi_leader);
-        //tvAddress_leader = (TextView) getView().findViewById(R.id.tvAddress_leader);
-        mWifiDetecter = new WifiDetecter(getActivity());
-        mWifiBeanList = new ArrayList<WifiBean>();
-        mWifiList = mWifiDetecter.getWifiList();
-        for (int i = 0; i < mWifiList.size(); i++) {
-            WifiBean mWifiBean = new WifiBean();
-            mWifiBean.setSsid(mWifiList.get(i).SSID);
-            mWifiBean.setMac(mWifiList.get(i).BSSID);
-            mWifiBeanList.add(mWifiBean);
-        }
-        mWifiAdapter = new WifiAdapter(getActivity(), mWifiBeanList);
-        rvWifi_leader.setAdapter(mWifiAdapter);
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvWifi_leader.setLayoutManager(mLinearLayoutManager);
-        mMacList = new ArrayList<String>();
-        for (int k = 0; k < mWifiBeanList.size(); k++) {
-            mMacList.add(mWifiBeanList.get(k).getMac());
-        }
-        mIntent = new Intent(getActivity(), LeaderService.class);
-        mIntent.setAction("act_mac");
-        //将当前wifi参数传递进Intent
-        mIntent.putStringArrayListExtra("extra_mac", mMacList);
-        getActivity().startService(mIntent);
+        //设置地图属性
         initMap();
     }
 

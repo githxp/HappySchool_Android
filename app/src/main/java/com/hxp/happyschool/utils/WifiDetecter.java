@@ -38,7 +38,23 @@ public class WifiDetecter {
         return mScanResult;
     }
 
+
     public WifiInfo getmWifiInfo(){
         return mWifiInfo;
+    }
+
+
+    public int getWifiStatus(){
+        return mWifiManager.getWifiState();
+    }
+
+
+    public void setWifiOpen(){
+        mWifiManager.setWifiEnabled(true);
+    }
+
+
+    public void setWifiClose(){
+        mWifiManager.setWifiEnabled(false);
     }
 }

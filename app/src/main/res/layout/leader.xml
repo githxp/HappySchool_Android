@@ -5,24 +5,10 @@
     android:layout_height="match_parent">
 
 
-    <LinearLayout
+    <com.amap.api.maps.MapView
+        android:id="@+id/mapViewAmap_leader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvWifi_leader"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="11"></android.support.v7.widget.RecyclerView>
-
-
-        <com.amap.api.maps.MapView
-            android:id="@+id/mapViewAmap_leader"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="9" />
-    </LinearLayout>
+        android:layout_height="match_parent" />
 
 
     <android.support.design.widget.FloatingActionButton

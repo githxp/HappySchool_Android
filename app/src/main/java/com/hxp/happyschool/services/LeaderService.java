@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.hxp.happyschool.adapters.WifiAdapter;
 import com.hxp.happyschool.beans.WifiBean;
 import com.hxp.happyschool.fragments.LeaderFragment;
+import com.hxp.happyschool.fragments.LocationFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,10 +39,12 @@ public class LeaderService extends Service {
     private Intent mIntent;
     private List<WifiBean> mWifiBeanList;
     private WifiAdapter mWifiAdapter;
+    private LocalBroadcastManager mLocalBroadcastManager;
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
         mWifiBean = new WifiBean();
         mWifiBeanList = new ArrayList<WifiBean>();
         mWifiAdapter = new WifiAdapter(this, mWifiBeanList);
@@ -87,9 +91,13 @@ public class LeaderService extends Service {
                         mOutputStream.close();
                         //进行json解析
                         JSONObject mJSONObject = new JSONObject(mStringBuffer.toString());
-                        //更新WifiBean地址;
-                        mWifiBean.setAddress(mJSONObject.getString("'" + mMacList.get(i) + "'"));
-                        mWifiBeanList.add(mWifiBean);
+                        //发送刷新状态给LocationFragment
+                        mIntent = new Intent();
+                        mIntent.setAction("act_success");
+                        //mIntent.putExtra("extra_success",mJSONObject.getString("'" + mMacList.get(i) + "'"));
+                        mLocalBroadcastManager.sendBroadcast(mIntent);
+                        //mWifiBean.setAddress(mJSONObject.getString("'" + mMacList.get(i) + "'"));
+                        //mWifiBeanList.add(mWifiBean);
                         Log.d("addressad", "" + mJSONObject.getString("'" + mMacList.get(i) + "'"));
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
@@ -99,7 +107,7 @@ public class LeaderService extends Service {
                         e.printStackTrace();
                     }
                 }
-                mWifiAdapter.notifyDataSetChanged();
+                //mWifiAdapter.notifyDataSetChanged();
             }
         }).start();
     }

@@ -23,6 +23,7 @@ import com.hxp.happyschool.fragments.ExamFragment;
 import com.hxp.happyschool.fragments.HotNewsFragment;
 import com.hxp.happyschool.fragments.LeaderFragment;
 import com.hxp.happyschool.fragments.LibraryFragment;
+import com.hxp.happyschool.fragments.LocationFragment;
 import com.hxp.happyschool.fragments.PersonFragment;
 import com.hxp.happyschool.fragments.ScoreFragment;
 import com.hxp.happyschool.fragments.SettingFragment;
@@ -79,7 +80,7 @@ public class MainActivity extends Activity implements OnClickListener {
         imgbtn_setting_main = (ImageButton) findViewById(R.id.imgbtn_setting_main);
         imgbtn_person_main = (ImageButton) findViewById(R.id.imgbtn_person_main);
         imgbtn_more_main = (ImageButton) findViewById(R.id.imgbtn_more_main);
-        mTabModuleDatas = new String[]{"课堂", "课表", "导航", "食堂", "微博", "头条", "书馆", "考场", "成绩"};
+        mTabModuleDatas = new String[]{"课堂", "课表", "位置", "导航", "微博", "食堂", "头条", "书馆", "考场", "成绩"};
         imgbtn_setting_main.setOnClickListener(this);
         imgbtn_person_main.setOnClickListener(this);
         imgbtn_more_main.setOnClickListener(this);
@@ -107,6 +108,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
         Fragment classUnionFragmentView = new ClassUnionFragment();
         Fragment classTableFragmentView = new ClassTableFragment();
+        Fragment locationFragment = new LocationFragment();
         Fragment leaderFragmentView = new LeaderFragment();
         Fragment cateryFragmentView = new CateryFragment();
         Fragment hotNewsFragmentView = new HotNewsFragment();
@@ -116,6 +118,7 @@ public class MainActivity extends Activity implements OnClickListener {
         Fragment scoreFragmentView = new ScoreFragment();
         mFragmentViews.add(classUnionFragmentView);
         mFragmentViews.add(classTableFragmentView);
+        mFragmentViews.add(locationFragment);
         mFragmentViews.add(leaderFragmentView);
         mFragmentViews.add(cateryFragmentView);
         mFragmentViews.add(hotNewsFragmentView);
@@ -131,7 +134,7 @@ public class MainActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imgbtn_person_main:
-                getFragmentManager().beginTransaction().add(R.id.main,new SettingFragment()).commit();
+                getFragmentManager().beginTransaction().add(R.id.main, new SettingFragment()).commit();
                 break;
 
             case R.id.imgbtn_setting_main:

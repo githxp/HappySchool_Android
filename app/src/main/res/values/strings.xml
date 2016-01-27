@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">乐校</string>
     <string name="address_wifiitem_leader">地址:</string>
+    <string name="openWifi_location">打开WLAN</string>
 </resources>
