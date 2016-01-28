@@ -6,13 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,9 +27,19 @@ import android.widget.Toast;
 import com.hxp.happyschool.R;
 import com.hxp.happyschool.adapters.WifiAdapter;
 import com.hxp.happyschool.beans.WifiBean;
-import com.hxp.happyschool.services.LeaderService;
 import com.hxp.happyschool.utils.WifiDetecter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,12 +49,11 @@ import java.util.List;
 public class LocationFragment extends Fragment implements OnClickListener {
 
 
-    //设置成员变量
+    //设置控件和成员变量
     private View view;
     private RecyclerView rvWifi_location;
     private WifiDetecter mWifiDetecter;
     private WifiAdapter mWifiAdapter;
-    private Intent mIntent;
     private List<WifiBean> mWifiBeanList;
     private List<ScanResult> mWifiList;
     private WifiBean mWifiBean;
@@ -52,9 +64,8 @@ public class LocationFragment extends Fragment implements OnClickListener {
     private FloatingActionButton fabPicture_location;
     private FloatingActionButton fabChart_location;
     private SwipeRefreshLayout swfreshWifiList_location;
-    private BroadcastReceiver mBroadcastReceiver;
-    private LocalBroadcastManager mLocalBroadcastManager;
-    private IntentFilter mIntentFilter;
+    private OnRefreshListener mOnRefreshListener;
+    private WifiAddressAsyncTask mWifiAddressAsyncTask;
 
 
     @Nullable
@@ -70,7 +81,24 @@ public class LocationFragment extends Fragment implements OnClickListener {
 
         super.onActivityCreated(savedInstanceState);
 
-        //初始化成员变量
+        //初始化控件和成员变量
+        initParams();
+
+        //判断wifi状态
+        if (mWifiDetecter.getWifiStatus() == 1 || mWifiDetecter.getWifiStatus() == 0) {
+            //wifi不可用时显示打开wifi界面布局
+            showOpenWifiLayout();
+        } else {
+            //获取mac和ssid
+            getMacAndSsid();
+            //wifi可用时异步获取服务器wifi地址并显示
+            mWifiAddressAsyncTask.execute(mMacList);
+        }
+    }
+
+
+    //定义初始化控件和成员变量方法
+    private void initParams() {
         rvWifi_location = (RecyclerView) getView().findViewById(R.id.rvWifi_location);
         btnOpenWifi_location = (Button) getView().findViewById(R.id.btnOpenWifi_location);
         fabWifi_location = (FloatingActionButton) getView().findViewById(R.id.fabWifi_location);
@@ -78,28 +106,8 @@ public class LocationFragment extends Fragment implements OnClickListener {
         fabChart_location = (FloatingActionButton) getView().findViewById(R.id.fabChart_location);
         layoutWifiFail_location = (RelativeLayout) getView().findViewById(R.id.layoutWifiFail_location);
         swfreshWifiList_location = (SwipeRefreshLayout) getView().findViewById(R.id.swfreshWifiList_location);
-        mLocalBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
-        mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction("act_success");
-        mBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if ("act_success".equals(intent.getAction())) {
-                    swfreshWifiList_location.setRefreshing(false);
-                }
-            }
-        };
-        mLocalBroadcastManager.registerReceiver(mBroadcastReceiver, mIntentFilter);
         swfreshWifiList_location.setColorSchemeResources(R.color.primaryBlue, R.color.primaryRed, R.color.primaryGreen);
-        swfreshWifiList_location.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mWifiList = mWifiDetecter.getWifiList();
-                getMacAddress();
-                initService();
-                mWifiAdapter.notifyDataSetChanged();
-            }
-        });
+        swfreshWifiList_location.setOnRefreshListener(mOnRefreshListener);
         btnOpenWifi_location.setOnClickListener(this);
         fabWifi_location.setOnClickListener(this);
         fabPicture_location.setOnClickListener(this);
@@ -107,64 +115,64 @@ public class LocationFragment extends Fragment implements OnClickListener {
         mWifiDetecter = new WifiDetecter(getActivity());
         mWifiBeanList = new ArrayList<WifiBean>();
         mWifiList = mWifiDetecter.getWifiList();
-
-        //判断wifi是否打开并显示相应布局
-        setOpenWifi();
-        //为RecycleView设置适配器
-        setAdapter();
-        //获取ssid和mac地址
-        getMacAddress();
-        //开启地址查询服务
-        initService();
-    }
-
-
-    //定义判断wifi是否打开并显示相应布局方法
-    public void setOpenWifi() {
-        if (mWifiDetecter.getWifiStatus() == 1) {
-            swfreshWifiList_location.setVisibility(View.GONE);
-            rvWifi_location.setVisibility(View.GONE);
-            layoutWifiFail_location.setVisibility(View.VISIBLE);
-        }
-    }
-
-
-    //定义为RecycleView设置适配器方法
-    private void setAdapter() {
-        mWifiAdapter = new WifiAdapter(getActivity(), mWifiBeanList);
-        rvWifi_location.setAdapter(mWifiAdapter);
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvWifi_location.setLayoutManager(mLinearLayoutManager);
-    }
-
-
-    //定义获取ssid和mac地址方法
-    private void getMacAddress() {
-        if (mWifiDetecter.getWifiStatus() == 2 || mWifiDetecter.getWifiStatus() == 3) {
-            for (int i = 0; i < mWifiList.size(); i++) {
-                mWifiBean = new WifiBean();
-                mWifiBean.setSsid(mWifiList.get(i).SSID);
-                mWifiBean.setMac(mWifiList.get(i).BSSID);
-                mWifiBeanList.add(mWifiBean);
+        mWifiAddressAsyncTask = new WifiAddressAsyncTask();
+        mOnRefreshListener = new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(getActivity(), "进入onrefreh", Toast.LENGTH_SHORT).show();
+                //wifi不可用或正在关闭时显示打开wifi界面
+                if (mWifiDetecter.getWifiStatus() == 1 || mWifiDetecter.getWifiStatus() == 0) {
+                    swfreshWifiList_location.setRefreshing(false);
+                    //显示打开wifi界面布局
+                    showOpenWifiLayout();
+                } else {
+                    //重置获取要刷新的mac数据集
+                    Toast.makeText(getActivity(), "网络连通", Toast.LENGTH_SHORT).show();
+                    mWifiList.clear();
+                    mWifiList = mWifiDetecter.getWifiList();
+                    mWifiBeanList.clear();
+                    for (int i = 0; i < mWifiList.size(); i++) {
+                        mWifiBean = new WifiBean();
+                        mWifiBean.setSsid(mWifiList.get(i).SSID);
+                        mWifiBean.setMac(mWifiList.get(i).BSSID);
+                        mWifiBeanList.add(mWifiBean);
+                    }
+                    //获取mac
+                    mMacList.clear();
+                    mMacList = new ArrayList<String>();
+                    for (int k = 0; k < mWifiBeanList.size(); k++) {
+                        mMacList.add(mWifiBeanList.get(k).getMac());
+                    }
+                    //异步获取服务器wifi地址并显示
+                    new WifiAddressAsyncTask().execute(mMacList);
+                    swfreshWifiList_location.setRefreshing(false);
+                }
             }
-            mMacList = new ArrayList<String>();
-            for (int k = 0; k < mWifiBeanList.size(); k++) {
-                mMacList.add(mWifiBeanList.get(k).getMac());
-            }
-            Toast.makeText(getActivity(), "ok2", Toast.LENGTH_SHORT).show();
-
-        }
+        };
     }
 
 
-    //定义开启地址查询服务方法
-    private void initService() {
-        if (mWifiDetecter.getWifiStatus() == 2 || mWifiDetecter.getWifiStatus() == 3) {
-            mIntent = new Intent(getActivity(), LeaderService.class);
-            mIntent.setAction("act_mac");
-            mIntent.putStringArrayListExtra("extra_mac", mMacList);
-            getActivity().startService(mIntent);
-            Toast.makeText(getActivity(), "ok1", Toast.LENGTH_SHORT).show();
+    //定义显示打开wifi界面布局方法
+    public void showOpenWifiLayout() {
+        swfreshWifiList_location.setVisibility(View.GONE);
+        rvWifi_location.setVisibility(View.GONE);
+        layoutWifiFail_location.setVisibility(View.VISIBLE);
+    }
+
+
+    //定义获取mac和ssid方法
+    public void getMacAndSsid() {
+        //获取mac和ssid和集合
+        for (int i = 0; i < mWifiList.size(); i++) {
+            mWifiBean = new WifiBean();
+            mWifiBean.setSsid(mWifiList.get(i).SSID);
+            mWifiBean.setMac(mWifiList.get(i).BSSID);
+            mWifiBeanList.add(mWifiBean);
+        }
+        //获取mac
+        mMacList = new ArrayList<String>();
+        for (int k = 0; k < mWifiBeanList.size(); k++) {
+            mMacList.add(mWifiBeanList.get(k).getMac());
         }
     }
 
@@ -173,16 +181,19 @@ public class LocationFragment extends Fragment implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
             case R.id.btnOpenWifi_location:
+                //打开wifi
                 mWifiDetecter.setWifiOpen();
+                //设置布局显示/隐藏
+                rvWifi_location.setVisibility(View.VISIBLE);
+                //显示刷新动画
+                swfreshWifiList_location.setRefreshing(true);
+                //执行刷新动作
+                mOnRefreshListener.onRefresh();
                 layoutWifiFail_location.setVisibility(View.GONE);
                 swfreshWifiList_location.setVisibility(View.VISIBLE);
-                rvWifi_location.setVisibility(View.VISIBLE);
-                if (mWifiDetecter.getWifiStatus() == 2 || mWifiDetecter.getWifiStatus() == 3) {
-                    getMacAddress();
-                    initService();
-                }
-                Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "启动异步任务", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.fabWifi_location:
@@ -205,9 +216,76 @@ public class LocationFragment extends Fragment implements OnClickListener {
     }
 
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mLocalBroadcastManager.unregisterReceiver(mBroadcastReceiver);
+    //异步获取服务器wifi地址并显示
+    private class WifiAddressAsyncTask extends AsyncTask<ArrayList<String>, Void, ArrayList<String>> {
+
+        //定义成员变量
+        private ArrayList<String> mAddressList;
+
+
+        @Override
+        protected ArrayList<String> doInBackground(ArrayList<String>... params) {
+            Log.d("async", "doinbackground");
+
+            //初始化成员变量
+            mAddressList = new ArrayList<String>();
+            //获取指定mac的地址信息
+
+            for (int i = 0; i < params[0].size(); i++) {
+                try {
+                    URL mURL = new URL("http://121.43.116.174/class/Leader/Leader_class.php");
+                    HttpURLConnection mHttpURLConnection = (HttpURLConnection) mURL.openConnection();
+                    mHttpURLConnection.setRequestMethod("POST");
+                    mHttpURLConnection.setReadTimeout(5000);
+                    OutputStream mOutputStream = mHttpURLConnection.getOutputStream();
+                    String mPostContent = "mac=" + "'" + params[0].get(i) + "'";
+                    mOutputStream.write(mPostContent.getBytes());
+                    BufferedReader mBufferedReader = new BufferedReader(new InputStreamReader(mHttpURLConnection.getInputStream()));
+                    StringBuffer mStringBuffer = new StringBuffer();
+                    String str;
+                    while ((str = mBufferedReader.readLine()) != null) {
+                        mStringBuffer.append(str);
+                    }
+                    mBufferedReader.close();
+                    mOutputStream.close();
+                    //进行json解析
+                    JSONObject mJSONObject = new JSONObject(mStringBuffer.toString());
+                    Log.d("json",mJSONObject.getString("'" + mMacList.get(i) + "'"));
+                    Log.d("json",mStringBuffer.toString());
+                    //把地址存入mAddress变量中
+                    mAddressList.add(mJSONObject.getString("'" + mMacList.get(i) + "'"));
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return mAddressList;
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+
+        @Override
+        protected void onPostExecute(ArrayList<String> list) {
+            Log.d("async", "onPostExecute");
+            super.onPostExecute(list);
+            //为RecycleView设置适配器
+            for (int i = 0; i < list.size(); i++) {
+                mWifiBeanList.get(i).setAddress(list.get(i));
+            }
+            mWifiAdapter = new WifiAdapter(getActivity(), mWifiBeanList);
+            rvWifi_location.setAdapter(mWifiAdapter);
+            LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            rvWifi_location.setLayoutManager(mLinearLayoutManager);
+        }
     }
 }
