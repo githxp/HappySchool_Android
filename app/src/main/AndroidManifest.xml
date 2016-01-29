@@ -47,8 +47,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service android:name=".services.LocationService"></service>
         <service android:name="com.amap.api.location.APSService"></service>
     </application>
 

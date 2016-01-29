@@ -18,7 +18,6 @@ public class WifiDetecter {
     private WifiManager mWifiManager;
     private WifiInfo mWifiInfo;
     private List<ScanResult> mScanResult;
-    public String mac;
 
 
     //创建构造方法
@@ -32,15 +31,8 @@ public class WifiDetecter {
         //扫描wifi网络
         mWifiManager.startScan();
         mScanResult = mWifiManager.getScanResults();
-        //获取mac地址
-        mac = mWifiInfo.getMacAddress();
         //返回wifi列表
         return mScanResult;
-    }
-
-
-    public WifiInfo getmWifiInfo(){
-        return mWifiInfo;
     }
 
 

@@ -178,9 +178,9 @@ public class LeaderFragment extends Fragment implements AMapLocationListener, Lo
                         .radiusFillColor(Color.argb(0, 86, 171, 228))
                         .anchor(0.5f, 0.5f).strokeWidth(0f);
                 mAmap.setMyLocationStyle(mMyLocationStyle);
-            } else {
+            }/* else {
                 Toast.makeText(getActivity(), "错误：" + aMapLocation.getErrorInfo(), Toast.LENGTH_SHORT).show();
-            }
+            }*/
         }
     }
 
