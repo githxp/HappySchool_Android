@@ -38,7 +38,9 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hxp on 16-1-27.
@@ -54,7 +56,8 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
     private List<WifiBean> mWifiBeanList;
     private List<ScanResult> mWifiList;
     private WifiBean mWifiBean;
-    private ArrayList<String> mMacList;
+    private List<RequestDatas> mRequestDatasList;
+    private RequestDatas mRequestDatas;
     private RelativeLayout layoutWifiFail_location;
     private RelativeLayout layoutWifiLoading_location;
     private Button btnOpenWifi_location;
@@ -103,7 +106,7 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
         } else {
             getMacAndSsid();
             //wifi可用时异步获取服务器wifi地址并显示
-            new WifiAddressAsyncTask().execute(mMacList);
+            new WifiAddressAsyncTask().execute(mRequestDatasList);
         }
     }
 
@@ -124,14 +127,18 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
             mWifiBean = new WifiBean();
             mWifiBean.setSsid(mWifiList.get(i).SSID);
             mWifiBean.setMac(mWifiList.get(i).BSSID);
+            mWifiBean.setMdb(mWifiList.get(i).level);
             mWifiBeanList.add(mWifiBean);
         }
         //获取mac
-        mMacList = new ArrayList<String>();
+        mRequestDatasList = new ArrayList<RequestDatas>();
+        mRequestDatas = new RequestDatas();
         for (int k = 0; k < mWifiBeanList.size(); k++) {
-            mMacList.add(mWifiBeanList.get(k).getMac());
+            mRequestDatas.setMac(mWifiBeanList.get(k).getMac());
+            mRequestDatas.setMdb(mWifiBeanList.get(k).getMdb());
+            mRequestDatasList.add(mRequestDatas);
         }
-        Log.d("流程控制", "mMaclist size" + mMacList.size());
+        Log.d("流程控制", "mMaclist size" + mRequestDatasList.size());
         Log.d("流程控制", "mWifiList size" + mWifiList.size());
         Log.d("流程控制", "mWifiBeanList size" + mWifiBeanList.size());
     }
@@ -158,10 +165,10 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
                             sleep(2500);
                             Log.d("流程控制", "getWifiStatus size" + mWifiDetecter.getWifiStatus());
                             getMacAndSsid();
-                            Log.d("流程控制", "mMaclist size" + mMacList.size());
+                            Log.d("流程控制", "mMaclist size" + mRequestDatasList.size());
                             Log.d("流程控制", "mWifiList size" + mWifiList.size());
                             Log.d("流程控制", "mWifiBeanList size" + mWifiBeanList.size());
-                            new WifiAddressAsyncTask().execute(mMacList);
+                            new WifiAddressAsyncTask().execute(mRequestDatasList);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -195,16 +202,40 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
         Log.d("流程控制", "刷新方法");
         mWifiList.clear();
         mWifiBeanList.clear();
-        mMacList.clear();
+        //mMacList.clear();
         getMacAndSsid();
-        new WifiAddressAsyncTask().execute(mMacList);
+        new WifiAddressAsyncTask().execute(mRequestDatasList);
     }
 
+
+    //定义要发送的mac和msd实体类
+    class RequestDatas {
+        public String mac;
+        public int mdb;
+
+        public String getMac() {
+            return mac;
+        }
+
+        public void setMac(String mac) {
+            this.mac = mac;
+        }
+
+        public int getMdb() {
+            return mdb;
+        }
+
+        public void setMdb(int mdb) {
+            this.mdb = mdb;
+        }
+    }
 
     //定义返回地址实体内部类
     class Address {
         public String mac;
         public String address;
+        public int distance;
+
 
         public String getAddress() {
             return address;
@@ -221,11 +252,19 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
         public void setMac(String mac) {
             this.mac = mac;
         }
+
+        public int getDistance() {
+            return distance;
+        }
+
+        public void setDistance(int distance) {
+            this.distance = distance;
+        }
     }
 
 
     //异步获取服务器wifi地址并显示
-    private class WifiAddressAsyncTask extends AsyncTask<ArrayList<String>, Void, List<Address>> {
+    private class WifiAddressAsyncTask extends AsyncTask<List<RequestDatas>, Void, List<Address>> {
 
         //定义成员变量
         private List<Address> mAddressList;
@@ -235,7 +274,7 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
 
 
         @Override
-        protected List<Address> doInBackground(ArrayList<String>... params) {
+        protected List<Address> doInBackground(List<RequestDatas>... params) {
             Log.d("流程控制", "doinbackground");
 
             //初始化成员变量
@@ -250,13 +289,17 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
                 mHttpURLConnection.setReadTimeout(5000);
                 mHttpURLConnection.setDoOutput(true);
                 OutputStream mOutputStream = mHttpURLConnection.getOutputStream();
-                //组装要发送的json
-                JSONArray mJSONArray = new JSONArray();
+                //组装要发送的json,格式为：数组包裹对象[{"mac":xxx,"mdb":xxx},{"mac":xxx,"mdb":xxx}...]
+                JSONArray mJsonArraySend = new JSONArray();
+                JSONObject mJsonObjectSend = new JSONObject();
                 for (int i = 0; i < params[0].size(); i++) {
-                    mJSONArray.put(params[0].get(i));
+                    mJsonObjectSend.put("mdb", params[0].get(i).getMdb());
+                    mJsonObjectSend.put("mac", params[0].get(i).getMac());
+                    mJsonArraySend.put(mJsonObjectSend);
                 }
-                mOutputStream.write(("mac=" + mJSONArray.toString()).getBytes());
-                //Log.d("json", "jsonsend" + mJSONArray.toString());
+
+                mOutputStream.write(("mac=" + mJsonArraySend.toString()).getBytes());
+                Log.d("json", "jsonsend" + mJsonArraySend.toString());
 
                 //获取服务器数据
                 mBufferedReader = new BufferedReader(new InputStreamReader(mHttpURLConnection.getInputStream()));
@@ -268,12 +311,15 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
                 mBufferedReader.close();
                 mOutputStream.close();
                 //进行json解析
-                JSONObject mJSONObject = new JSONObject(mStringBuffer.toString());
-                //保存json数据作为本地适配器数据源,格式为：(mac,地址)
-                for (int i = 0; i < params[0].size(); i++) {
+                JSONArray mJsonArrayReceive = new JSONArray(mStringBuffer.toString());
+                Log.d("jsondoc", mStringBuffer.toString());
+                //保存json数据作为本地适配器数据源,格式为：(mac,地址,距离)
+                for (int i = 0; i < mJsonArrayReceive.length(); i++) {
+                    JSONObject mJsonObjectReceive = mJsonArrayReceive.getJSONObject(i);
                     mAddress = new Address();
-                    mAddress.setMac(params[0].get(i));
-                    mAddress.setAddress(mJSONObject.optString(params[0].get(i), "暂无地址信息"));
+                    mAddress.setMac(params[0].get(i).getMac());
+                    mAddress.setAddress(mJsonObjectReceive.optString("address","暂无地址信息"));
+                    mAddress.setDistance(mJsonObjectReceive.optInt("distance"));
                     mAddressList.add(mAddress);
                     //Log.d("jsonadapter", mJSONObject.optString(params[0].get(i)));
                     //Log.d("jsondoc", mStringBuffer.toString());
@@ -304,9 +350,10 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
             super.onPostExecute(list);
             //为RecycleView设置适配器
             for (int i = 0; i < list.size(); i++) {
-                for (int k = 0; k < mMacList.size(); k++) {
+                for (int k = 0; k < mRequestDatasList.size(); k++) {
                     if (list.get(i).getMac().equals(mWifiBeanList.get(k).getMac())) {
                         mWifiBeanList.get(k).setAddress(list.get(i).getAddress());
+                        mWifiBeanList.get(k).setDistance(list.get(i).getDistance());
                         break;
                     }
                 }

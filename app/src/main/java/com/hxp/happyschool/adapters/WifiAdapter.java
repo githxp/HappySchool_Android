@@ -43,7 +43,7 @@ public class WifiAdapter extends Adapter<myViewHolder> {
         mWifiBean = mBeans.get(position);
         holder.tvSsid_location.setText(mWifiBean.getSsid());
         holder.tvAddress_location.setText(mWifiBean.getAddress());
-        holder.tvDistance_location.setText(mWifiBean.getDistance());
+        holder.tvDistance_location.setText(mWifiBean.getDistance()+"米");
     }
 
     @Override

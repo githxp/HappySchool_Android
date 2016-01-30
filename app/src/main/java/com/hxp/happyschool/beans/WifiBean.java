@@ -10,7 +10,8 @@ public class WifiBean {
     public String mac;
     public String address;
     public String ssid;
-    public String distance;
+    public int distance;
+    public int mdb;
 
 
     /*//创建构造方法
@@ -51,12 +52,21 @@ public class WifiBean {
     }
 
 
-    public String getDistance() {
+    public int getMdb() {
+        return mdb;
+    }
+
+    public void setMdb(int mdb) {
+        this.mdb = mdb;
+    }
+
+
+    public int getDistance() {
         return distance;
     }
 
 
-    public void setDistance(String distance) {
+    public void setDistance(int distance) {
         this.distance = distance;
     }
 }
