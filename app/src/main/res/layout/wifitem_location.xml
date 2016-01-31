@@ -15,25 +15,33 @@
         android:textSize="@dimen/title_wifitem_leader_xhdpi" />
 
 
-    <TextView
-        android:id="@+id/tvAddress_location"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/relativeLayoutAddress_location"
+        android:layout_width="260dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_below="@+id/tvSsid_location"
-        android:layout_weight="3"
-        android:background="@color/primaryGreen"
-        android:singleLine="false"
-        android:textColor="@color/second"
-        android:textSize="@dimen/address_wifitem_leader_xhdpi" />
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/tvAddress_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@color/primaryGreen"
+            android:singleLine="false"
+            android:textColor="@color/second"
+            android:textSize="@dimen/address_wifitem_leader_xhdpi" />
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/tvDistance_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvAddress_location"
         android:layout_alignParentRight="true"
-        android:layout_weight="1"
+        android:layout_alignTop="@+id/relativeLayoutAddress_location"
+        android:background="@color/primaryBlue"
+        android:textColor="@color/second"
         android:textSize="@dimen/address_wifitem_leader_xhdpi" />
 
 </RelativeLayout>

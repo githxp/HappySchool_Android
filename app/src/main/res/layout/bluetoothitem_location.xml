@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+
+    <TextView
+        android:id="@+id/tvBluetoothName_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/taboutText"
+        android:textSize="@dimen/title_wifitem_leader_xhdpi" />
+
+    <TextView
+        android:id="@+id/tvBluetoothDistance_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/primaryGreen"
+        android:textColor="@color/second"
+        android:textSize="@dimen/title_wifitem_leader_xhdpi" />
+</RelativeLayout>

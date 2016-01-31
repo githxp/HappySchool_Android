@@ -56,6 +56,7 @@ public class WifiBean {
         return mdb;
     }
 
+
     public void setMdb(int mdb) {
         this.mdb = mdb;
     }

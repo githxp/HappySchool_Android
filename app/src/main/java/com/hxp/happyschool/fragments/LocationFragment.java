@@ -56,15 +56,15 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
     private List<WifiBean> mWifiBeanList;
     private List<ScanResult> mWifiList;
     private WifiBean mWifiBean;
-    private List<RequestDatas> mRequestDatasList;
-    private RequestDatas mRequestDatas;
     private RelativeLayout layoutWifiFail_location;
     private RelativeLayout layoutWifiLoading_location;
     private Button btnOpenWifi_location;
-    private FloatingActionButton fabWifi_location;
+    private FloatingActionButton fabBluetooth_location;
     private FloatingActionButton fabPicture_location;
     private FloatingActionButton fabChart_location;
     private SwipeRefreshLayout swipeRefreshLayout_location;
+    Bluetooth_LocationFragment mBluetooth_LocationFragment;
+    private boolean mOnClick = true;
 
 
     @Nullable
@@ -83,7 +83,7 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
         //初始化控件和成员变量
         rvWifi_location = (RecyclerView) getView().findViewById(R.id.rvWifi_location);
         btnOpenWifi_location = (Button) getView().findViewById(R.id.btnOpenWifi_location);
-        fabWifi_location = (FloatingActionButton) getView().findViewById(R.id.fabWifi_location);
+        fabBluetooth_location = (FloatingActionButton) getView().findViewById(R.id.fabBluetooth_location);
         fabPicture_location = (FloatingActionButton) getView().findViewById(R.id.fabPicture_location);
         fabChart_location = (FloatingActionButton) getView().findViewById(R.id.fabChart_location);
         layoutWifiFail_location = (RelativeLayout) getView().findViewById(R.id.layoutWifiFail_location);
@@ -92,12 +92,12 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
         swipeRefreshLayout_location.setColorSchemeResources(R.color.primaryBlue, R.color.primaryGreen, R.color.primaryRed);
         swipeRefreshLayout_location.setOnRefreshListener(this);
         btnOpenWifi_location.setOnClickListener(this);
-        fabWifi_location.setOnClickListener(this);
+        fabBluetooth_location.setOnClickListener(this);
         fabPicture_location.setOnClickListener(this);
         fabChart_location.setOnClickListener(this);
         mWifiDetecter = new WifiDetecter(getActivity());
         mWifiBeanList = new ArrayList<WifiBean>();
-
+        mBluetooth_LocationFragment = new Bluetooth_LocationFragment();
 
         //判断wifi状态
         if (mWifiDetecter.getWifiStatus() == 1 || mWifiDetecter.getWifiStatus() == 0) {
@@ -106,7 +106,7 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
         } else {
             getMacAndSsid();
             //wifi可用时异步获取服务器wifi地址并显示
-            new WifiAddressAsyncTask().execute(mRequestDatasList);
+            new WifiAddressAsyncTask().execute(mWifiBeanList);
         }
     }
 
@@ -130,15 +130,6 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
             mWifiBean.setMdb(mWifiList.get(i).level);
             mWifiBeanList.add(mWifiBean);
         }
-        //获取mac
-        mRequestDatasList = new ArrayList<RequestDatas>();
-        mRequestDatas = new RequestDatas();
-        for (int k = 0; k < mWifiBeanList.size(); k++) {
-            mRequestDatas.setMac(mWifiBeanList.get(k).getMac());
-            mRequestDatas.setMdb(mWifiBeanList.get(k).getMdb());
-            mRequestDatasList.add(mRequestDatas);
-        }
-        Log.d("流程控制", "mMaclist size" + mRequestDatasList.size());
         Log.d("流程控制", "mWifiList size" + mWifiList.size());
         Log.d("流程控制", "mWifiBeanList size" + mWifiBeanList.size());
     }
@@ -165,10 +156,9 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
                             sleep(2500);
                             Log.d("流程控制", "getWifiStatus size" + mWifiDetecter.getWifiStatus());
                             getMacAndSsid();
-                            Log.d("流程控制", "mMaclist size" + mRequestDatasList.size());
                             Log.d("流程控制", "mWifiList size" + mWifiList.size());
                             Log.d("流程控制", "mWifiBeanList size" + mWifiBeanList.size());
-                            new WifiAddressAsyncTask().execute(mRequestDatasList);
+                            new WifiAddressAsyncTask().execute(mWifiBeanList);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -176,8 +166,22 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
                 }.start();
                 break;
 
-            case R.id.fabWifi_location:
-                Toast.makeText(getActivity(), "ok1", Toast.LENGTH_SHORT).show();
+            case R.id.fabBluetooth_location:
+                if (mOnClick) {
+                    swipeRefreshLayout_location.setVisibility(View.GONE);
+                    rvWifi_location.setVisibility(View.GONE);
+                    //第一次添加蓝牙Fragment
+                    getFragmentManager().beginTransaction().add(R.id.layoutLocaton, mBluetooth_LocationFragment).commit();
+                    fabBluetooth_location.setImageResource(R.drawable.ic_location_wifi);
+                    mOnClick = false;
+                } else {
+                    getFragmentManager().beginTransaction().remove(mBluetooth_LocationFragment).commit();
+                    swipeRefreshLayout_location.setVisibility(View.VISIBLE);
+                    rvWifi_location.setVisibility(View.VISIBLE);
+                    fabBluetooth_location.setImageResource(R.drawable.ic_location_bluetooth);
+                    mOnClick = true;
+                }
+
 
                 break;
 
@@ -199,88 +203,34 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
     //实现OnRefreshListener接口方法
     @Override
     public void onRefresh() {
-        Log.d("流程控制", "刷新方法");
-        mWifiList.clear();
-        mWifiBeanList.clear();
-        //mMacList.clear();
-        getMacAndSsid();
-        new WifiAddressAsyncTask().execute(mRequestDatasList);
-    }
-
-
-    //定义要发送的mac和msd实体类
-    class RequestDatas {
-        public String mac;
-        public int mdb;
-
-        public String getMac() {
-            return mac;
-        }
-
-        public void setMac(String mac) {
-            this.mac = mac;
-        }
-
-        public int getMdb() {
-            return mdb;
-        }
-
-        public void setMdb(int mdb) {
-            this.mdb = mdb;
-        }
-    }
-
-    //定义返回地址实体内部类
-    class Address {
-        public String mac;
-        public String address;
-        public int distance;
-
-
-        public String getAddress() {
-            return address;
-        }
-
-        public void setAddress(String address) {
-            this.address = address;
-        }
-
-        public String getMac() {
-            return mac;
-        }
-
-        public void setMac(String mac) {
-            this.mac = mac;
-        }
-
-        public int getDistance() {
-            return distance;
-        }
-
-        public void setDistance(int distance) {
-            this.distance = distance;
+        if (mWifiDetecter.getWifiStatus() == 1 || mWifiDetecter.getWifiStatus() == 0) {
+            //wifi不可用时显示打开wifi界面布局
+            layoutWifiLoading_location.setVisibility(View.GONE);
+            rvWifi_location.setVisibility(View.GONE);
+            swipeRefreshLayout_location.setVisibility(View.GONE);
+            layoutWifiFail_location.setVisibility(View.VISIBLE);
+            swipeRefreshLayout_location.setRefreshing(false);
+        } else {
+            Log.d("流程控制", "刷新方法");
+            mWifiList.clear();
+            mWifiBeanList.clear();
+            getMacAndSsid();
+            new WifiAddressAsyncTask().execute(mWifiBeanList);
         }
     }
 
 
     //异步获取服务器wifi地址并显示
-    private class WifiAddressAsyncTask extends AsyncTask<List<RequestDatas>, Void, List<Address>> {
+    private class WifiAddressAsyncTask extends AsyncTask<List<WifiBean>, Void, List<WifiBean>> {
 
-        //定义成员变量
-        private List<Address> mAddressList;
-        private Address mAddress;
+
         private BufferedReader mBufferedReader;
         private StringBuffer mStringBuffer;
 
 
         @Override
-        protected List<Address> doInBackground(List<RequestDatas>... params) {
+        protected List<WifiBean> doInBackground(List<WifiBean>... params) {
             Log.d("流程控制", "doinbackground");
-
-            //初始化成员变量
-            mAddressList = new ArrayList<Address>();
-
-
             //与服务器连接
             try {
                 URL mURL = new URL("http://121.43.116.174/class/Location/Location_class.php");
@@ -291,15 +241,16 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
                 OutputStream mOutputStream = mHttpURLConnection.getOutputStream();
                 //组装要发送的json,格式为：数组包裹对象[{"mac":xxx,"mdb":xxx},{"mac":xxx,"mdb":xxx}...]
                 JSONArray mJsonArraySend = new JSONArray();
-                JSONObject mJsonObjectSend = new JSONObject();
+                JSONObject mJsonObjectSend;
                 for (int i = 0; i < params[0].size(); i++) {
-                    mJsonObjectSend.put("mdb", params[0].get(i).getMdb());
+                    mJsonObjectSend = new JSONObject();
                     mJsonObjectSend.put("mac", params[0].get(i).getMac());
+                    mJsonObjectSend.put("mdb", params[0].get(i).getMdb());
                     mJsonArraySend.put(mJsonObjectSend);
                 }
 
-                mOutputStream.write(("mac=" + mJsonArraySend.toString()).getBytes());
-                Log.d("json", "jsonsend" + mJsonArraySend.toString());
+                mOutputStream.write(("json=" + mJsonArraySend.toString()).getBytes());
+                Log.d("json:", "mac=" + mJsonArraySend.toString());
 
                 //获取服务器数据
                 mBufferedReader = new BufferedReader(new InputStreamReader(mHttpURLConnection.getInputStream()));
@@ -311,18 +262,19 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
                 mBufferedReader.close();
                 mOutputStream.close();
                 //进行json解析
+                Log.d("json", "json解析时");
                 JSONArray mJsonArrayReceive = new JSONArray(mStringBuffer.toString());
                 Log.d("jsondoc", mStringBuffer.toString());
                 //保存json数据作为本地适配器数据源,格式为：(mac,地址,距离)
-                for (int i = 0; i < mJsonArrayReceive.length(); i++) {
-                    JSONObject mJsonObjectReceive = mJsonArrayReceive.getJSONObject(i);
-                    mAddress = new Address();
-                    mAddress.setMac(params[0].get(i).getMac());
-                    mAddress.setAddress(mJsonObjectReceive.optString("address","暂无地址信息"));
-                    mAddress.setDistance(mJsonObjectReceive.optInt("distance"));
-                    mAddressList.add(mAddress);
-                    //Log.d("jsonadapter", mJSONObject.optString(params[0].get(i)));
-                    //Log.d("jsondoc", mStringBuffer.toString());
+                for (int i = 0; i < params[0].size(); i++) {
+                    for (int k = 0; k < mJsonArrayReceive.length(); k++) {
+                        JSONObject mJsonObjectReceive = mJsonArrayReceive.getJSONObject(k);
+                        if (params[0].get(i).getMac().equals(mJsonObjectReceive.optString("mac"))) {
+                            params[0].get(i).setAddress(mJsonObjectReceive.optString("address"));
+                            params[0].get(i).setDistance(mJsonObjectReceive.optInt("distance"));
+                            break;
+                        }
+                    }
                 }
                 mHttpURLConnection.disconnect();
             } catch (MalformedURLException e) {
@@ -334,7 +286,7 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return mAddressList;
+            return mWifiBeanList;
         }
 
 
@@ -345,20 +297,10 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
 
 
         @Override
-        protected void onPostExecute(List<Address> list) {
+        protected void onPostExecute(List<WifiBean> list) {
             Log.d("流程控制", "onPostExecute");
             super.onPostExecute(list);
-            //为RecycleView设置适配器
-            for (int i = 0; i < list.size(); i++) {
-                for (int k = 0; k < mRequestDatasList.size(); k++) {
-                    if (list.get(i).getMac().equals(mWifiBeanList.get(k).getMac())) {
-                        mWifiBeanList.get(k).setAddress(list.get(i).getAddress());
-                        mWifiBeanList.get(k).setDistance(list.get(i).getDistance());
-                        break;
-                    }
-                }
-            }
-            mWifiAdapter = new WifiAdapter(getActivity(), mWifiBeanList);
+            mWifiAdapter = new WifiAdapter(getActivity(), list);
             rvWifi_location.setAdapter(mWifiAdapter);
             LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             rvWifi_location.setLayoutManager(mLinearLayoutManager);
