@@ -6,15 +6,70 @@
     android:layout_margin="10dp">
 
 
+    <RelativeLayout
+        android:id="@+id/layoutBluetoothFail_location"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnOpenBluetooth_location"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/ic_location_bluetoothfail" />
+
+        <Button
+            android:id="@+id/btnOpenBluetooth_location"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/primaryGreen"
+            android:text="@string/openBluetooth_location"
+            android:textColor="@color/second" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/layoutBluetoothLoading_location"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tvWifiLoading_location"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/ic_location_bluetoothloading" />
+
+        <TextView
+            android:id="@+id/tvWifiLoading_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/loadBluetooth_location"
+            android:textColor="@color/taboutText"
+            android:textSize="@dimen/address_wifitem_leader_xhdpi" />
+    </RelativeLayout>
+
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayoutBluetooth_location"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvBluetooth_location"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent"
+            android:visibility="gone"></android.support.v7.widget.RecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
+
 </android.support.design.widget.CoordinatorLayout>

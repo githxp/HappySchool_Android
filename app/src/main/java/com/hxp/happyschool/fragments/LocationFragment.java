@@ -170,14 +170,21 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
                 if (mOnClick) {
                     swipeRefreshLayout_location.setVisibility(View.GONE);
                     rvWifi_location.setVisibility(View.GONE);
+                    layoutWifiFail_location.setVisibility(View.GONE);
+                    layoutWifiLoading_location.setVisibility(View.GONE);
                     //第一次添加蓝牙Fragment
                     getFragmentManager().beginTransaction().add(R.id.layoutLocaton, mBluetooth_LocationFragment).commit();
                     fabBluetooth_location.setImageResource(R.drawable.ic_location_wifi);
                     mOnClick = false;
                 } else {
+                    if (mWifiDetecter.getWifiStatus() == 1 || mWifiDetecter.getWifiStatus() == 0) {
+                        layoutWifiFail_location.setVisibility(View.VISIBLE);
+                    } else {
+                        swipeRefreshLayout_location.setVisibility(View.VISIBLE);
+                        rvWifi_location.setVisibility(View.VISIBLE);
+                        //layoutWifiLoading_location.setVisibility(View.VISIBLE);
+                    }
                     getFragmentManager().beginTransaction().remove(mBluetooth_LocationFragment).commit();
-                    swipeRefreshLayout_location.setVisibility(View.VISIBLE);
-                    rvWifi_location.setVisibility(View.VISIBLE);
                     fabBluetooth_location.setImageResource(R.drawable.ic_location_bluetooth);
                     mOnClick = true;
                 }

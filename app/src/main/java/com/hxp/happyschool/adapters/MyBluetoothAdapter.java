@@ -1,3 +1,4 @@
+
 package com.hxp.happyschool.adapters;
 
 import android.content.Context;
@@ -13,10 +14,12 @@ import com.hxp.happyschool.beans.WifiBean;
 
 import java.util.List;
 
+
 /**
  * Created by hxp on 16-1-23.
  */
-public class BluetoothAdapter extends Adapter<mBluetoothViewHolder> {
+
+public class MyBluetoothAdapter extends Adapter<mBluetoothViewHolder> {
 
 
     private LayoutInflater mLayoutInflater;
@@ -25,7 +28,7 @@ public class BluetoothAdapter extends Adapter<mBluetoothViewHolder> {
     //private WifiBean mWifiBean;
 
 
-    public BluetoothAdapter(Context context, List<WifiBean> beans) {
+    public MyBluetoothAdapter(Context context) {
         this.mContext = context;
         //this.mBeans = beans;
         mLayoutInflater = LayoutInflater.from(context);
@@ -33,21 +36,21 @@ public class BluetoothAdapter extends Adapter<mBluetoothViewHolder> {
 
     @Override
     public mBluetoothViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View mView = mLayoutInflater.inflate(R.layout.wifitem_location, parent, false);
-        myViewHolder mmyViewHolder = new myViewHolder(mView);
+        View mView = mLayoutInflater.inflate(R.layout.bluetoothitem_location, parent, false);
+        mBluetoothViewHolder mmyViewHolder = new mBluetoothViewHolder(mView);
         return mmyViewHolder;
     }
 
     @Override
     public void onBindViewHolder(mBluetoothViewHolder holder, int position) {
         //mWifiBean = mBeans.get(position);
-        holder.tvBluetoothName_location.setText(mWifiBean.getSsid());
-        holder.tvBluetoothDistance_location.setText(mWifiBean.getDistance() + "米");
+        holder.tvBluetoothName_location.setText("蓝牙1");
+        holder.tvBluetoothDistance_location.setText("12米");
     }
 
     @Override
     public int getItemCount() {
-        return mBeans.size();
+        return 3;
     }
 
 }
@@ -63,4 +66,5 @@ class mBluetoothViewHolder extends RecyclerView.ViewHolder {
         tvBluetoothDistance_location = (TextView) itemView.findViewById(R.id.tvBluetoothDistance_location);
     }
 }
+
 
