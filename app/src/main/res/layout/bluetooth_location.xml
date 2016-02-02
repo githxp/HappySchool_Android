@@ -53,7 +53,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="@string/loadBluetooth_location"
-            android:textColor="@color/taboutText"
+            android:textColor="@color/primaryGrey"
             android:textSize="@dimen/address_wifitem_leader_xhdpi" />
     </RelativeLayout>
 

@@ -9,8 +9,4 @@
     </style>
 
 
-    <style name="taboutStyles">
-        <item name="android:textSize">@dimen/tabBtnTextsize</item>
-    </style>
-
 </resources>

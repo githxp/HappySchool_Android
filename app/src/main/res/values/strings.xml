@@ -5,4 +5,8 @@
     <string name="openBluetooth_location">打开蓝牙</string>
     <string name="loadWifi_location">正在获取最新位置</string>
     <string name="loadBluetooth_location">正在扫描蓝牙设备</string>
+    <string name="studyMainButtomBar">学习</string>
+    <string name="lifeMainButtomBar">生活</string>
+    <string name="entertainmentMainButtomBar">娱乐</string>
+
 </resources>

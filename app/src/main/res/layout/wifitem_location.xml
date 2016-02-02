@@ -11,7 +11,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="5dp"
-        android:textColor="@color/taboutText"
+        android:textColor="@color/primaryGrey"
         android:textSize="@dimen/title_wifitem_leader_xhdpi" />
 
 

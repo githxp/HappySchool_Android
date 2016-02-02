@@ -6,19 +6,11 @@
     <dimen name="titleText_xhdpi">22sp</dimen>
     <!--标题栏图标长宽-->
     <dimen name="titleImg_xhdpi">48dp</dimen>
-    <!--模块栏布局高度-->
-    <dimen name="tabLayoutHeight_xhdpi">46dp</dimen>
-    <!--模块栏文字-->
-    <dimen name="tabText_xhdpi">18sp</dimen>
-    <!--模块栏按钮外左边距-->
-    <dimen name="tabBtnMarginLeft">0dp</dimen>
-    <!--模块栏按钮外右边距-->
-    <dimen name="tabBtnMarginRight">8dp</dimen>
-    <!--模块栏按钮文字-->
-    <dimen name="tabBtnTextsize">18sp</dimen>
     <!--wifi定位标题-->
     <dimen name="title_wifitem_leader_xhdpi">18sp</dimen>
     <!--wifi定位地址文字-->
     <dimen name="address_wifitem_leader_xhdpi">16sp</dimen>
+    <dimen name="rvtext_study">18sp</dimen>
+    <dimen name="rvItemHeight_study">60dp</dimen>
 
 </resources>

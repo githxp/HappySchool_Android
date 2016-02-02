@@ -13,7 +13,7 @@
         android:layout_centerVertical="true"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:textColor="@color/taboutText"
+        android:textColor="@color/primaryGrey"
         android:textSize="@dimen/title_wifitem_leader_xhdpi" />
 
     <TextView
