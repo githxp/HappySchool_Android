@@ -20,6 +20,5 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@+id/imgClassunion_studyrv"
-        android:text="文字"
         android:textSize="@dimen/rvtext_study" />
 </RelativeLayout>

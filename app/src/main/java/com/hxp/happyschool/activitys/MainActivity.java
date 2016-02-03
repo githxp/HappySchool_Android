@@ -2,19 +2,18 @@ package com.hxp.happyschool.activitys;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hxp.happyschool.R;
-import com.hxp.happyschool.adapters.StudyAdapter_Main;
-import com.hxp.happyschool.beans.StudyBean;
+import com.hxp.happyschool.fragments.EntertainmentFragment;
+import com.hxp.happyschool.fragments.LifeFragment;
 import com.hxp.happyschool.fragments.PersonFragment;
 import com.hxp.happyschool.fragments.SettingFragment;
+import com.hxp.happyschool.fragments.StudyFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +34,12 @@ public class MainActivity extends Activity implements OnClickListener {
     private TextView tvStudy_main;
     private TextView tvLife_main;
     private TextView tvEntertainment_main;
+    private StudyFragment mStudyFragment;
+    private LifeFragment mLifeFragment;
+    private EntertainmentFragment mEntertainmentFragment;
+    private boolean isStudyclicked;
+    private boolean isLifeclicked;
+    private boolean isEntertainmentclicked;
 
 
     @Override
@@ -63,6 +68,17 @@ public class MainActivity extends Activity implements OnClickListener {
         imgbtn_study_main.setOnClickListener(this);
         imgbtn_life_main.setOnClickListener(this);
         imgbtn_entertainment_main.setOnClickListener(this);
+        isStudyclicked = false;
+        isLifeclicked = true;
+        isEntertainmentclicked = true;
+        mStudyFragment = new StudyFragment();
+        mLifeFragment = new LifeFragment();
+        mEntertainmentFragment = new EntertainmentFragment();
+        getFragmentManager().beginTransaction().add(R.id.fragmentContent_main, mStudyFragment).commit();
+        getFragmentManager().beginTransaction().add(R.id.fragmentContent_main, mLifeFragment).commit();
+        getFragmentManager().beginTransaction().add(R.id.fragmentContent_main, mEntertainmentFragment).commit();
+        getFragmentManager().beginTransaction().hide(mLifeFragment).commit();
+        getFragmentManager().beginTransaction().hide(mEntertainmentFragment).commit();
     }
 
 
@@ -79,26 +95,58 @@ public class MainActivity extends Activity implements OnClickListener {
                 break;
 
             case R.id.imgbtn_study_main:
-                backInitColor();
-                imgbtn_study_main.setImageResource(R.drawable.ic_buttombar_study_pressed);
-                tvStudy_main.setTextColor(getResources().getColor(R.color.primaryBlue));
+                if (isStudyclicked) {
+                    Log.d("click", "studyclick");
+                    backInitColor();
+                    imgbtn_study_main.setImageResource(R.drawable.ic_buttombar_study_pressed);
+                    tvStudy_main.setTextColor(getResources().getColor(R.color.primaryBlue));
+                    backInitFragment();
+                    getFragmentManager().beginTransaction().show(mStudyFragment).commit();
+                    isLifeclicked = true;
+                    isEntertainmentclicked = true;
+                    isStudyclicked = false;
+                }
                 break;
 
             case R.id.imgbtn_life_main:
-                backInitColor();
-                imgbtn_life_main.setImageResource(R.drawable.ic_buttombar_life_pressed);
-                tvLife_main.setTextColor(getResources().getColor(R.color.primaryBlue));
+                if (isLifeclicked) {
+                    Log.d("click", "lifeclick");
+                    backInitColor();
+                    imgbtn_life_main.setImageResource(R.drawable.ic_buttombar_life_pressed);
+                    tvLife_main.setTextColor(getResources().getColor(R.color.primaryBlue));
+                    backInitFragment();
+                    getFragmentManager().beginTransaction().show(mLifeFragment).commit();
+                    isStudyclicked = true;
+                    isEntertainmentclicked = true;
+                    isLifeclicked = false;
+                }
                 break;
 
             case R.id.imgbtn_entertainment_main:
-                backInitColor();
-                imgbtn_entertainment_main.setImageResource(R.drawable.ic_buttombar_entertainment_pressed);
-                tvEntertainment_main.setTextColor(getResources().getColor(R.color.primaryBlue));
+                if (isEntertainmentclicked) {
+                    Log.d("click", "entertainmentclick");
+                    backInitColor();
+                    imgbtn_entertainment_main.setImageResource(R.drawable.ic_buttombar_entertainment_pressed);
+                    tvEntertainment_main.setTextColor(getResources().getColor(R.color.primaryBlue));
+                    backInitFragment();
+                    getFragmentManager().beginTransaction().show(mEntertainmentFragment).commit();
+                    isStudyclicked = true;
+                    isLifeclicked = true;
+                    isEntertainmentclicked = false;
+                }
                 break;
 
             default:
                 break;
         }
+    }
+
+
+    //定义恢复初始fragment方法
+    private void backInitFragment() {
+        getFragmentManager().beginTransaction().hide(mStudyFragment).commit();
+        getFragmentManager().beginTransaction().hide(mLifeFragment).commit();
+        getFragmentManager().beginTransaction().hide(mEntertainmentFragment).commit();
     }
 
 

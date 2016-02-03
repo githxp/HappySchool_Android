@@ -47,7 +47,7 @@ public class StudyAdapter_Main extends Adapter<StudyViewHolder_Main> {
     //重写方法
     @Override
     public StudyViewHolder_Main onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mLayoutInflater.inflate(R.layout.mainitem, parent, false);
+        View view = mLayoutInflater.inflate(R.layout.studyitem, parent, false);
         StudyViewHolder_Main mStudyViewHolder_Main = new StudyViewHolder_Main(view);
         return mStudyViewHolder_Main;
     }
