@@ -61,6 +61,7 @@
         android:paddingBottom="6dp">
 
         <LinearLayout
+            android:id="@+id/linearlayout_study_main"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -70,19 +71,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <ImageButton
-                    android:id="@+id/imgbtn_study_main"
+                <ImageView
+                    android:id="@+id/img_study_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/alpha0"
-                    android:src="@drawable/ic_buttombar_study_pressed" />
+                    android:src="@drawable/ic_buttombar_study_unpressed" />
 
                 <TextView
                     android:id="@+id/tvStudy_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/imgbtn_study_main"
+                    android:layout_below="@+id/img_study_main"
                     android:layout_centerHorizontal="true"
                     android:text="@string/studyMainButtomBar"
                     android:textColor="@color/primaryGrey"
@@ -92,6 +92,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearlayout_life_main"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -101,19 +102,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <ImageButton
-                    android:id="@+id/imgbtn_life_main"
+                <ImageView
+                    android:id="@+id/img_life_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/alpha0"
                     android:src="@drawable/ic_buttombar_life_unpressed" />
 
                 <TextView
                     android:id="@+id/tvLife_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/imgbtn_life_main"
+                    android:layout_below="@+id/img_life_main"
                     android:layout_centerHorizontal="true"
                     android:text="@string/lifeMainButtomBar"
                     android:textColor="@color/primaryGrey"
@@ -123,6 +123,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearlayout_entertainment_main"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -132,24 +133,56 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <ImageButton
-                    android:id="@+id/imgbtn_entertainment_main"
+                <ImageView
+                    android:id="@+id/img_entertainment_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/alpha0"
                     android:src="@drawable/ic_buttombar_entertainment_unpressed" />
 
                 <TextView
                     android:id="@+id/tvEntertainment_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/imgbtn_entertainment_main"
+                    android:layout_below="@+id/img_entertainment_main"
                     android:layout_centerHorizontal="true"
                     android:text="@string/entertainmentMainButtomBar"
                     android:textColor="@color/primaryGrey"
                     android:textSize="10sp" />
             </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_more_main"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/img_more_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_buttombar_more_unpressed" />
+
+                <TextView
+                    android:id="@+id/tvMore_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_more_main"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/moreMainButtomBar"
+                    android:textColor="@color/primaryGrey"
+                    android:textSize="10sp" />
+            </RelativeLayout>
+
 
         </LinearLayout>
 
