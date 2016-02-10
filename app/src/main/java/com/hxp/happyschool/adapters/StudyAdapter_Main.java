@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,7 +33,7 @@ public class StudyAdapter_Main extends Adapter<StudyViewHolder_Main> {
 
 
     //创建回调单击方法
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 
@@ -54,9 +55,17 @@ public class StudyAdapter_Main extends Adapter<StudyViewHolder_Main> {
 
 
     @Override
-    public void onBindViewHolder(StudyViewHolder_Main holder, int position) {
-        holder.tvStduyAdapter_Main.setText(datas.get(position).getmItemName());
-        holder.imgClassunion_studyrv.setImageResource(datas.get(position).getmImageResource());
+    public void onBindViewHolder(final StudyViewHolder_Main holder, final int position) {
+        holder.tv_title_studytitem.setText(datas.get(position).getmItemName());
+        holder.img_icon_studyitem.setImageResource(datas.get(position).getmImageResource());
+        holder.itemView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.OnItemClick(holder.itemView, position);
+                }
+            }
+        });
     }
 
 
@@ -69,13 +78,13 @@ public class StudyAdapter_Main extends Adapter<StudyViewHolder_Main> {
 
 class StudyViewHolder_Main extends ViewHolder {
 
-    TextView tvStduyAdapter_Main;
-    ImageView imgClassunion_studyrv;
+    TextView tv_title_studytitem;
+    ImageView img_icon_studyitem;
 
     public StudyViewHolder_Main(View itemView) {
         super(itemView);
-        tvStduyAdapter_Main = (TextView) itemView.findViewById(R.id.tvStduyAdapter_Main);
-        imgClassunion_studyrv = (ImageView) itemView.findViewById(R.id.imgClassunion_studyrv);
+        tv_title_studytitem = (TextView) itemView.findViewById(R.id.tv_title_studyitem);
+        img_icon_studyitem = (ImageView) itemView.findViewById(R.id.img_icon_studyitem);
     }
 
 

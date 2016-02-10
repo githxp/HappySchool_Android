@@ -1,24 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/rvItemHeight_study"
-    android:padding="10dp">
+    android:layout_height="100dp"
+    android:layout_marginBottom="6dp"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:layout_marginTop="6dp"
+    card_view:cardBackgroundColor="@color/colorAccent"
+    card_view:cardCornerRadius="3dp"
+    card_view:cardElevation="2dp">
 
 
-    <ImageView
-        android:id="@+id/imgicon_lifeitem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_studyrv_classunion" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
 
-    <TextView
-        android:id="@+id/tvtitle_lifeitem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
-        android:layout_toRightOf="@+id/imgicon_lifeitem"
-        android:textSize="@dimen/rvtext_study" />
-</RelativeLayout>
+
+        <ImageView
+            android:id="@+id/img_icon_lifeitem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_studyrv_classunion" />
+
+        <TextView
+            android:id="@+id/tv_title_lifeitem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/imgicon_lifeitem"
+            android:textSize="@dimen/rvtext_study" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

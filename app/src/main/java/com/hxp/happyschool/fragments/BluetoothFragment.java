@@ -26,7 +26,7 @@ import com.hxp.happyschool.adapters.MyBluetoothAdapter;
 /**
  * Created by hxp on 16-1-31.
  */
-public class Bluetooth_LocationFragment extends Fragment implements OnClickListener {
+public class BluetoothFragment extends Fragment implements OnClickListener {
 
 
     //定义成员变量

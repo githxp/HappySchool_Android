@@ -11,127 +11,148 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hxp.happyschool.R;
+import com.hxp.happyschool.databases.DatabaseImplement;
 import com.hxp.happyschool.fragments.EntertainmentFragment;
 import com.hxp.happyschool.fragments.LifeFragment;
-import com.hxp.happyschool.fragments.PersonFragment;
-import com.hxp.happyschool.fragments.SettingFragment;
 import com.hxp.happyschool.fragments.StudyFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
- * App主活动
+ * 主Activity
  */
 public class MainActivity extends Activity implements OnClickListener {
 
-
     //获取控件和设置成员变量
+    //顶部图片按钮
     private ImageButton imgbtn_person_main;
     private ImageButton imgbtn_setting_main;
 
-    private ImageView img_study_main;
-    private ImageView img_life_main;
-    private ImageView img_entertainment_main;
-    private ImageView img_more_main;
+    //底部tab图片
+    private ImageView img_studyTab_main;
+    private ImageView img_lifeTab_main;
+    private ImageView img_entertainmentTab_main;
+    private ImageView img_moreTab_main;
 
-    private LinearLayout linearlayout_study_main;
-    private LinearLayout linearlayout_life_main;
-    private LinearLayout linearlayout_entertainment_main;
-    private LinearLayout linearlayout_more_main;
+    //容纳图片的线性布局
+    private LinearLayout linearlayout_studyTab_main;
+    private LinearLayout linearlayout_lifeTab_main;
+    private LinearLayout linearlayout_entertainmentTab_main;
+    private LinearLayout linearlayout_moreTab_main;
 
-    private TextView tvStudy_main;
-    private TextView tvLife_main;
-    private TextView tvEntertainment_main;
-    private TextView tvMore_main;
+    //底部tab文字
+    private TextView tv_studyTab_main;
+    private TextView tv_lifeTab_main;
+    private TextView tv_entertainmentTab_main;
+    private TextView tv_moreTab_main;
 
+    //中间Fragment
     private StudyFragment mStudyFragment;
     private LifeFragment mLifeFragment;
     private EntertainmentFragment mEntertainmentFragment;
 
+    //底部tab点击标记
     private boolean isStudyClicked;
     private boolean isLifeClicked;
     private boolean isEntertainmentClicked;
     private boolean isMorecliCked;
 
+    //数据库实现类
+    private DatabaseImplement mDatabaseImplement;
 
+
+    //重写父类onCreate方法
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        //初始化控件和成员变量和ViewPager适配器
+        //初始化控件和成员变量
         initParams();
 
-        linearlayout_study_main.performClick();
+        //预执行一次学习tab点击
+        linearlayout_studyTab_main.performClick();
     }
 
 
-    //定义初始化控件和成员变量和ViewPager适配器方法
+    //定义初始化控件和成员变量方法
     private void initParams() {
+
+        //顶部图片按钮
         imgbtn_setting_main = (ImageButton) findViewById(R.id.imgbtn_setting_main);
         imgbtn_person_main = (ImageButton) findViewById(R.id.imgbtn_person_main);
 
-        img_study_main = (ImageView) findViewById(R.id.img_study_main);
-        img_life_main = (ImageView) findViewById(R.id.img_life_main);
-        img_entertainment_main = (ImageView) findViewById(R.id.img_entertainment_main);
-        img_more_main = (ImageView) findViewById(R.id.img_more_main);
+        //底部tab图片
+        img_studyTab_main = (ImageView) findViewById(R.id.img_studyTab_main);
+        img_lifeTab_main = (ImageView) findViewById(R.id.img_lifeTab_main);
+        img_entertainmentTab_main = (ImageView) findViewById(R.id.img_entertainmentTab_main);
+        img_moreTab_main = (ImageView) findViewById(R.id.img_moreTab_main);
 
-        linearlayout_study_main = (LinearLayout) findViewById(R.id.linearlayout_study_main);
-        linearlayout_life_main = (LinearLayout) findViewById(R.id.linearlayout_life_main);
-        linearlayout_entertainment_main = (LinearLayout) findViewById(R.id.linearlayout_entertainment_main);
-        linearlayout_more_main = (LinearLayout) findViewById(R.id.linearlayout_more_main);
+        //容纳图片的线性布局
+        linearlayout_studyTab_main = (LinearLayout) findViewById(R.id.linearlayout_studyTab_main);
+        linearlayout_lifeTab_main = (LinearLayout) findViewById(R.id.linearlayout_lifeTab_main);
+        linearlayout_entertainmentTab_main = (LinearLayout) findViewById(R.id.linearlayout_entertainmentTab_main);
+        linearlayout_moreTab_main = (LinearLayout) findViewById(R.id.linearlayout_moreTab_main);
 
-        tvStudy_main = (TextView) findViewById(R.id.tvStudy_main);
-        tvLife_main = (TextView) findViewById(R.id.tvLife_main);
-        tvEntertainment_main = (TextView) findViewById(R.id.tvEntertainment_main);
-        tvMore_main = (TextView) findViewById(R.id.tvMore_main);
+        //底部tab文字
+        tv_studyTab_main = (TextView) findViewById(R.id.tv_studyTab_main);
+        tv_lifeTab_main = (TextView) findViewById(R.id.tv_lifeTab_main);
+        tv_entertainmentTab_main = (TextView) findViewById(R.id.tv_entertainmentTab_main);
+        tv_moreTab_main = (TextView) findViewById(R.id.tv_moreTab_main);
 
-        imgbtn_setting_main.setOnClickListener(this);
-        imgbtn_person_main.setOnClickListener(this);
+        //中间Fragment
+        mStudyFragment = new StudyFragment();
+        mLifeFragment = new LifeFragment();
+        mEntertainmentFragment = new EntertainmentFragment();
 
-        linearlayout_study_main.setOnClickListener(this);
-        linearlayout_life_main.setOnClickListener(this);
-        linearlayout_entertainment_main.setOnClickListener(this);
-        linearlayout_more_main.setOnClickListener(this);
-
+        //底部tab点击标记
         isStudyClicked = true;
         isLifeClicked = true;
         isEntertainmentClicked = true;
         isMorecliCked = true;
 
-        mStudyFragment = new StudyFragment();
-        mLifeFragment = new LifeFragment();
-        mEntertainmentFragment = new EntertainmentFragment();
+        //数据库实现类
+        mDatabaseImplement = new DatabaseImplement(this.getApplicationContext());
 
-        getFragmentManager().beginTransaction().add(R.id.fragmentContent_main, mStudyFragment).commit();
-        getFragmentManager().beginTransaction().add(R.id.fragmentContent_main, mLifeFragment).commit();
-        getFragmentManager().beginTransaction().add(R.id.fragmentContent_main, mEntertainmentFragment).commit();
+        //添加顶部图片按钮点击事件侦听
+        imgbtn_setting_main.setOnClickListener(this);
+        imgbtn_person_main.setOnClickListener(this);
+
+        //添加容纳图片的线性布局点击事件侦听
+        linearlayout_studyTab_main.setOnClickListener(this);
+        linearlayout_lifeTab_main.setOnClickListener(this);
+        linearlayout_entertainmentTab_main.setOnClickListener(this);
+        linearlayout_moreTab_main.setOnClickListener(this);
+
+        //预加载主界面StudyFragment+LifeFragment+EntertainmentFragment
+        getFragmentManager().beginTransaction().add(R.id.linearlayout_fragmentContent_main, mStudyFragment).commit();
+        getFragmentManager().beginTransaction().add(R.id.linearlayout_fragmentContent_main, mLifeFragment).commit();
+        getFragmentManager().beginTransaction().add(R.id.linearlayout_fragmentContent_main, mEntertainmentFragment).commit();
+
+        //隐藏LifeFragment+EntertainmentFragment
         getFragmentManager().beginTransaction().hide(mLifeFragment).commit();
         getFragmentManager().beginTransaction().hide(mEntertainmentFragment).commit();
     }
 
 
-    //实现OnclickListener接口方法
+    //实现OnclickListener接口
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imgbtn_person_main:
-                getFragmentManager().beginTransaction().add(R.id.main, new SettingFragment()).commit();
+                //getFragmentManager().beginTransaction().add(R.id.main, new SettingFragment()).commit();
                 break;
 
             case R.id.imgbtn_setting_main:
-                getFragmentManager().beginTransaction().add(R.id.main, new PersonFragment()).commit();
+                //getFragmentManager().beginTransaction().add(R.id.main, new PersonFragment()).commit();
                 break;
 
-            case R.id.linearlayout_study_main:
+            case R.id.linearlayout_studyTab_main:
                 if (isStudyClicked) {
                     Log.d("click", "studyclick");
                     backInitColor();
-                    img_study_main.setImageResource(R.drawable.ic_buttombar_study_pressed);
-                    tvStudy_main.setTextColor(getResources().getColor(R.color.primaryBlue));
+                    img_studyTab_main.setImageResource(R.drawable.ic_buttombar_study_pressed);
+                    tv_studyTab_main.setTextColor(getResources().getColor(R.color.primaryBlue));
                     backInitFragment();
                     getFragmentManager().beginTransaction().show(mStudyFragment).commit();
                     isLifeClicked = true;
@@ -141,14 +162,24 @@ public class MainActivity extends Activity implements OnClickListener {
                 }
                 break;
 
-            case R.id.linearlayout_life_main:
+            case R.id.linearlayout_lifeTab_main:
                 if (isLifeClicked) {
                     Log.d("click", "lifeclick");
+
+                    //恢复初始颜色
                     backInitColor();
-                    img_life_main.setImageResource(R.drawable.ic_buttombar_life_pressed);
-                    tvLife_main.setTextColor(getResources().getColor(R.color.primaryBlue));
+
+                    //加载tab按下时图片+文字的显示状态
+                    img_lifeTab_main.setImageResource(R.drawable.ic_buttombar_life_pressed);
+                    tv_lifeTab_main.setTextColor(getResources().getColor(R.color.primaryBlue));
+
+                    //恢复初始fragment显示状态
                     backInitFragment();
+
+                    //加载tab按下时Fragment的显示状态
                     getFragmentManager().beginTransaction().show(mLifeFragment).commit();
+
+                    //重置底部tab点击标记
                     isStudyClicked = true;
                     isEntertainmentClicked = true;
                     isMorecliCked = true;
@@ -156,14 +187,24 @@ public class MainActivity extends Activity implements OnClickListener {
                 }
                 break;
 
-            case R.id.linearlayout_entertainment_main:
+            case R.id.linearlayout_entertainmentTab_main:
                 if (isEntertainmentClicked) {
                     Log.d("click", "entertainmentclick");
+
+                    //恢复初始颜色
                     backInitColor();
-                    img_entertainment_main.setImageResource(R.drawable.ic_buttombar_entertainment_pressed);
-                    tvEntertainment_main.setTextColor(getResources().getColor(R.color.primaryBlue));
+
+                    //加载tab按下时图片+文字的显示状态
+                    img_entertainmentTab_main.setImageResource(R.drawable.ic_buttombar_entertainment_pressed);
+                    tv_entertainmentTab_main.setTextColor(getResources().getColor(R.color.primaryBlue));
+
+                    //恢复初始fragment显示状态
                     backInitFragment();
+
+                    //加载tab按下时Fragment的显示状态
                     getFragmentManager().beginTransaction().show(mEntertainmentFragment).commit();
+
+                    //重置底部tab点击标记
                     isStudyClicked = true;
                     isLifeClicked = true;
                     isMorecliCked = true;
@@ -171,14 +212,21 @@ public class MainActivity extends Activity implements OnClickListener {
                 }
                 break;
 
-            case R.id.linearlayout_more_main:
+            case R.id.linearlayout_moreTab_main:
                 if (isMorecliCked) {
                     Log.d("click", "moretclick");
+
+                    //恢复初始颜色
                     backInitColor();
-                    img_more_main.setImageResource(R.drawable.ic_buttombar_more_pressed);
-                    tvMore_main.setTextColor(getResources().getColor(R.color.primaryBlue));
+
+                    //加载tab按下时图片+文字的显示状态
+                    img_moreTab_main.setImageResource(R.drawable.ic_buttombar_more_pressed);
+                    tv_moreTab_main.setTextColor(getResources().getColor(R.color.primaryBlue));
+
                     /*backInitFragment();
                     getFragmentManager().beginTransaction().show(mEntertainmentFragment).commit();*/
+
+                    //重置底部tab点击标记
                     isStudyClicked = true;
                     isLifeClicked = true;
                     isEntertainmentClicked = true;
@@ -192,7 +240,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
 
-    //定义恢复初始fragment方法
+    //定义恢复初始fragment显示状态方法
     private void backInitFragment() {
         getFragmentManager().beginTransaction().hide(mStudyFragment).commit();
         getFragmentManager().beginTransaction().hide(mLifeFragment).commit();
@@ -202,14 +250,16 @@ public class MainActivity extends Activity implements OnClickListener {
 
     //定义恢复初始颜色方法
     private void backInitColor() {
-        img_study_main.setImageResource(R.drawable.ic_buttombar_study_unpressed);
-        img_life_main.setImageResource(R.drawable.ic_buttombar_life_unpressed);
-        img_entertainment_main.setImageResource(R.drawable.ic_buttombar_entertainment_unpressed);
-        img_more_main.setImageResource(R.drawable.ic_buttombar_more_unpressed);
+        //图片恢复初始颜色
+        img_studyTab_main.setImageResource(R.drawable.ic_buttombar_study_unpressed);
+        img_lifeTab_main.setImageResource(R.drawable.ic_buttombar_life_unpressed);
+        img_entertainmentTab_main.setImageResource(R.drawable.ic_buttombar_entertainment_unpressed);
+        img_moreTab_main.setImageResource(R.drawable.ic_buttombar_more_unpressed);
 
-        tvStudy_main.setTextColor(getResources().getColor(R.color.primaryGrey));
-        tvLife_main.setTextColor(getResources().getColor(R.color.primaryGrey));
-        tvEntertainment_main.setTextColor(getResources().getColor(R.color.primaryGrey));
-        tvMore_main.setTextColor(getResources().getColor(R.color.primaryGrey));
+        //文字恢复初始颜色
+        tv_studyTab_main.setTextColor(getResources().getColor(R.color.primaryGrey));
+        tv_lifeTab_main.setTextColor(getResources().getColor(R.color.primaryGrey));
+        tv_entertainmentTab_main.setTextColor(getResources().getColor(R.color.primaryGrey));
+        tv_moreTab_main.setTextColor(getResources().getColor(R.color.primaryGrey));
     }
 }

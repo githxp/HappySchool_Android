@@ -1,6 +1,7 @@
 package com.hxp.happyschool.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,10 +9,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.hxp.happyschool.R;
+import com.hxp.happyschool.activitys.ClassTableActivity;
+import com.hxp.happyschool.activitys.ClassUnionActivity;
+import com.hxp.happyschool.activitys.ExamActivity;
+import com.hxp.happyschool.activitys.HotNewsActivity;
+import com.hxp.happyschool.activitys.LibraryActivity;
+import com.hxp.happyschool.activitys.ScoreActivity;
+import com.hxp.happyschool.activitys.WebLogActivity;
 import com.hxp.happyschool.adapters.EntertainmentAdapter;
-import com.hxp.happyschool.adapters.StudyAdapter_Main;
+import com.hxp.happyschool.adapters.EntertainmentAdapter.OnItemClickListener;
 import com.hxp.happyschool.beans.EntertainmentBean;
 import com.hxp.happyschool.beans.StudyBean;
 
@@ -32,6 +41,7 @@ public class EntertainmentFragment extends Fragment {
     private EntertainmentAdapter mEntertainmentAdapter_Main;
     private String[] strarrItenName_main;
     private int[] intarrImg_main;
+    private Intent mIntent;
 
 
     @Nullable
@@ -50,10 +60,8 @@ public class EntertainmentFragment extends Fragment {
         //初始化成员变量
         rvEntertainment_main = (RecyclerView) getView().findViewById(R.id.rvEntertaiment_main);
         mEntertainmentListDatas = new ArrayList<EntertainmentBean>();
-        strarrItenName_main = new String[]{"课堂", "课表", "书馆", "考场", "成绩", "考场", "成绩"};
-        intarrImg_main = new int[]{R.drawable.ic_studyrv_classunion, R.drawable.ic_studyrv_classtable,
-                R.drawable.ic_studyrv_library, R.drawable.ic_studyrv_exam, R.drawable.ic_studyrv_score,
-                R.drawable.ic_studyrv_exam, R.drawable.ic_studyrv_score};
+        strarrItenName_main = new String[]{"微博", "头条"};
+        intarrImg_main = new int[]{R.drawable.ic_studyrv_classunion, R.drawable.ic_studyrv_classtable};
         for (int i = 0; i < strarrItenName_main.length; i++) {
             mEntertainmentBean = new EntertainmentBean();
             mEntertainmentBean.setmItemName(strarrItenName_main[i]);
@@ -62,6 +70,26 @@ public class EntertainmentFragment extends Fragment {
         }
         mEntertainmentAdapter_Main = new EntertainmentAdapter(getActivity(), mEntertainmentListDatas);
         rvEntertainment_main.setAdapter(mEntertainmentAdapter_Main);
+        mEntertainmentAdapter_Main.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int position) {
+                Toast.makeText(getActivity(), "123" + position, Toast.LENGTH_SHORT).show();
+                switch (position) {
+                    case 0:
+                        mIntent = new Intent(getActivity(), WebLogActivity.class);
+                        startActivity(mIntent);
+                        break;
+
+                    case 1:
+                        mIntent = new Intent(getActivity(), HotNewsActivity.class);
+                        startActivity(mIntent);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        });
         LinearLayoutManager rvEntertainment_mainLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvEntertainment_main.setLayoutManager(rvEntertainment_mainLinearLayoutManager);
     }

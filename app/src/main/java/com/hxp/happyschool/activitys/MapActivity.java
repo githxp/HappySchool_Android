@@ -1,17 +1,11 @@
-package com.hxp.happyschool.fragments;
+package com.hxp.happyschool.activitys;
 
-import android.app.Fragment;
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 import android.view.View.OnClickListener;
 
-import com.hxp.happyschool.databases.DatabaseImplement;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -27,20 +21,16 @@ import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.hxp.happyschool.R;
 
-/**
+/**地图Activity
  * Created by hxp on 16-1-20.
  */
-public class LeaderFragment extends Fragment implements AMapLocationListener, LocationSource, OnClickListener {
-
+public class MapActivity extends Activity implements AMapLocationListener, LocationSource, OnClickListener {
 
     //获取控件和设置成员变量
     //地图
-    private View view;
-    private MapView mapViewAmap_leader;
+    private MapView mapview_mamap_map;
     private AMap mAmap;
     private UiSettings mUiSettings;
-    private FloatingActionButton fabSearch_leader;
-    private DatabaseImplement mDatabaseImplement;
 
 
     //定位
@@ -50,32 +40,26 @@ public class LeaderFragment extends Fragment implements AMapLocationListener, Lo
     private MyLocationStyle mMyLocationStyle;
 
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.leader, container, false);
-        return view;
-    }
+    protected void onCreate(Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.map);
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         //初始化控件和成员变量
         //地图
-        mapViewAmap_leader = (MapView) view.findViewById(R.id.mapViewAmap_leader);
-        mapViewAmap_leader.onCreate(savedInstanceState);
-        mAmap = mapViewAmap_leader.getMap();
+        mapview_mamap_map = (MapView) findViewById(R.id.mapview_mamap_map);
+        mapview_mamap_map.onCreate(savedInstanceState);
+        mAmap = mapview_mamap_map.getMap();
         mUiSettings = mAmap.getUiSettings();
-        mDatabaseImplement = new DatabaseImplement(getActivity().getApplicationContext());
-        //控件
-        fabSearch_leader = (FloatingActionButton) getView().findViewById(R.id.fabSearch_leader);
-        //fabNavigation_leader = (FloatingActionButton) getView().findViewById(R.id.fabNavigation_leader);
-        fabSearch_leader.setOnClickListener(this);
-        //fabNavigation_leader.setOnClickListener(this);
+
         //定位
-        mAMapLocationClient = new AMapLocationClient(getActivity());
+        mAMapLocationClient = new AMapLocationClient(this);
         mAMapLocationClientOption = new AMapLocationClientOption();
+
+        //添加地图点击事件侦听
+        mapview_mamap_map.setOnClickListener(this);
+
         //设置地图属性
         initMap();
     }
@@ -83,26 +67,40 @@ public class LeaderFragment extends Fragment implements AMapLocationListener, Lo
 
     //定义设置地图属性方法
     private void initMap() {
+
         //设置Logo在底部左侧位置
         mUiSettings.setLogoPosition(AMapOptions.LOGO_POSITION_BOTTOM_LEFT);
+
         //设置显示比例尺
         mUiSettings.setScaleControlsEnabled(true);
+
         //设置比例尺在底部右侧显示
         mUiSettings.setZoomPosition(AMapOptions.ZOOM_POSITION_RIGHT_BUTTOM);
+
         //设置显示定位按钮
         mUiSettings.setMyLocationButtonEnabled(true);
+
         //设置不显示指南针按钮
         mUiSettings.setCompassEnabled(false);
+
         //显示室内地图
         mAmap.showIndoorMap(true);
+
         //关闭交通地图
         mAmap.setTrafficEnabled(false);
+
+        //设置定位资源
         mAmap.setLocationSource(this);
+
+        //打开定位功能
         mAmap.setMyLocationEnabled(true);
+
         //设置地图默认中心点
         //mAmap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(28.296474, 112.873986)));
+
         //设置地图缩放级别
         mAmap.moveCamera(CameraUpdateFactory.zoomTo(17));
+
         //添加地图标记
         addMarks();
     }
@@ -167,7 +165,7 @@ public class LeaderFragment extends Fragment implements AMapLocationListener, Lo
     }
 
 
-    //定义实现AMapLocationListener接口方法
+    //实现AMapLocationListener接口
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
         if (aMapLocation != null) {
@@ -185,20 +183,27 @@ public class LeaderFragment extends Fragment implements AMapLocationListener, Lo
     }
 
 
-    //定义实现LocationSource接口方法
+    //实现LocationSource接口
     @Override
     public void activate(OnLocationChangedListener onLocationChangedListener) {
+
         mOnLocationChangedListener = onLocationChangedListener;
+
         //设置定位监听
         mAMapLocationClient.setLocationListener(this);
+
         //高精度定位模式,开启网络定位和GPS定位,优先返回精度高的定位
         mAMapLocationClientOption.setLocationMode(AMapLocationMode.Hight_Accuracy);
+
         //设置允许模拟位置
         mAMapLocationClientOption.setMockEnable(true);
+
         //绑定定位属性
         mAMapLocationClient.setLocationOption(mAMapLocationClientOption);
+
         //设置定位到地图中心并自动旋转
         mAmap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
+
         //开始定位
         mAMapLocationClient.startLocation();
     }
@@ -215,56 +220,46 @@ public class LeaderFragment extends Fragment implements AMapLocationListener, Lo
     }
 
 
-    //实现OnclickListener接口方法
+    //实现OnclickListener接口
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fabSearch_leader:
-                Toast.makeText(getActivity(), "搜索功能正在开发", Toast.LENGTH_SHORT).show();
-                break;
 
-            /*case R.id.fabNavigation_leader:
-                Toast.makeText(getActivity(), "导航功能正在开发", Toast.LENGTH_SHORT).show();
-                break;*/
-
-            default:
-                break;
-        }
     }
 
 
+    //重写一系列父类方法
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mapViewAmap_leader.onSaveInstanceState(outState);
+        mapview_mamap_map.onSaveInstanceState(outState);
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        mapViewAmap_leader.onResume();
+        mapview_mamap_map.onResume();
     }
 
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mapViewAmap_leader.onLowMemory();
+        mapview_mamap_map.onLowMemory();
     }
 
 
     @Override
     public void onPause() {
         super.onPause();
-        mapViewAmap_leader.onPause();
+        mapview_mamap_map.onPause();
     }
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mapViewAmap_leader.onDestroy();
+        mapview_mamap_map.onDestroy();
         mAMapLocationClient.stopLocation();
         mAMapLocationClient.onDestroy();
         mAMapLocationClient = null;

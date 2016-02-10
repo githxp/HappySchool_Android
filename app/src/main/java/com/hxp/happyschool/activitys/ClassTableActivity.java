@@ -1,5 +1,6 @@
-package com.hxp.happyschool.fragments;
+package com.hxp.happyschool.activitys;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,27 +17,16 @@ import com.hxp.happyschool.adapters.WifiAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/**课表Activity
  * Created by hxp on 16-1-20.
  */
-public class ClassTableFragment extends Fragment {
-
-
-    private View view;
-
-
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.classtable, container, false);
-        return view;
-    }
+public class ClassTableActivity extends Activity {
 
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.classtable);
     }
+
 }

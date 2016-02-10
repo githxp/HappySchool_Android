@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
+    android:id="@+id/linearlayout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -23,7 +23,7 @@
             android:src="@drawable/ic_menu_setting" />
 
         <TextView
-            android:id="@+id/tvTitle_main"
+            android:id="@+id/tv_title_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -45,7 +45,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/fragmentContent_main"
+        android:id="@+id/linearlayout_fragmentContent_main"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -61,7 +61,7 @@
         android:paddingBottom="6dp">
 
         <LinearLayout
-            android:id="@+id/linearlayout_study_main"
+            android:id="@+id/linearlayout_studyTab_main"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -72,17 +72,17 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/img_study_main"
+                    android:id="@+id/img_studyTab_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/ic_buttombar_study_unpressed" />
 
                 <TextView
-                    android:id="@+id/tvStudy_main"
+                    android:id="@+id/tv_studyTab_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/img_study_main"
+                    android:layout_below="@+id/img_studyTab_main"
                     android:layout_centerHorizontal="true"
                     android:text="@string/studyMainButtomBar"
                     android:textColor="@color/primaryGrey"
@@ -92,7 +92,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearlayout_life_main"
+            android:id="@+id/linearlayout_lifeTab_main"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -103,17 +103,17 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/img_life_main"
+                    android:id="@+id/img_lifeTab_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/ic_buttombar_life_unpressed" />
 
                 <TextView
-                    android:id="@+id/tvLife_main"
+                    android:id="@+id/tv_lifeTab_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/img_life_main"
+                    android:layout_below="@+id/img_lifeTab_main"
                     android:layout_centerHorizontal="true"
                     android:text="@string/lifeMainButtomBar"
                     android:textColor="@color/primaryGrey"
@@ -123,7 +123,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearlayout_entertainment_main"
+            android:id="@+id/linearlayout_entertainmentTab_main"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -134,17 +134,17 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/img_entertainment_main"
+                    android:id="@+id/img_entertainmentTab_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/ic_buttombar_entertainment_unpressed" />
 
                 <TextView
-                    android:id="@+id/tvEntertainment_main"
+                    android:id="@+id/tv_entertainmentTab_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/img_entertainment_main"
+                    android:layout_below="@+id/img_entertainmentTab_main"
                     android:layout_centerHorizontal="true"
                     android:text="@string/entertainmentMainButtomBar"
                     android:textColor="@color/primaryGrey"
@@ -155,7 +155,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearlayout_more_main"
+            android:id="@+id/linearlayout_moreTab_main"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -166,17 +166,17 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/img_more_main"
+                    android:id="@+id/img_moreTab_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/ic_buttombar_more_unpressed" />
 
                 <TextView
-                    android:id="@+id/tvMore_main"
+                    android:id="@+id/tv_moreTab_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/img_more_main"
+                    android:layout_below="@+id/img_moreTab_main"
                     android:layout_centerHorizontal="true"
                     android:text="@string/moreMainButtomBar"
                     android:textColor="@color/primaryGrey"

@@ -27,8 +27,8 @@ public class BaseDatabase extends SQLiteOpenHelper {
         db.execSQL("create table classtable (id integer primary key autoincrement,school text," +
                 "major text,grade text,class text)");
         //创建食堂表
-        db.execSQL("create table catery (id integer primary key autoincrement,name text,desc text," +
-                "takeaway blob,telephone text,address text,iscatery blob,comment text," +
+        db.execSQL("create table eatery (id integer primary key autoincrement,name text,desc text," +
+                "takeaway blob,telephone text,address text,iseatery blob,comment text," +
                 "like_number integer,dislike_number,cover text,screen_shot1 text,screen_shot2 text," +
                 "screen_shot3 text)");
         //创建头条表
@@ -53,7 +53,7 @@ public class BaseDatabase extends SQLiteOpenHelper {
         //删除已存在的表
         db.execSQL("drop table if exist classunion");
         db.execSQL("drop table if exist classtable");
-        db.execSQL("drop table if exist catery");
+        db.execSQL("drop table if exist eatery");
         db.execSQL("drop table if exist hotnews");
         db.execSQL("drop table if exist library");
         db.execSQL("drop table if exist exam");
@@ -68,8 +68,8 @@ public class BaseDatabase extends SQLiteOpenHelper {
         db.execSQL("create table classtable (id integer primary key autoincrement,school text," +
                 "major text,grade text,class text)");
         //创建食堂表
-        db.execSQL("create table catery (id integer primary key autoincrement,name text,desc text," +
-                "takeaway blob,telephone text,address text,iscatery blob,comment text," +
+        db.execSQL("create table eatery (id integer primary key autoincrement,name text,desc text," +
+                "takeaway blob,telephone text,address text,iseatery blob,comment text," +
                 "like_number integer,dislike_number,cover text,screen_shot1 text,screen_shot2 text," +
                 "screen_shot3 text)");
         //创建头条表

@@ -23,6 +23,19 @@ public class EntertainmentAdapter extends Adapter<EntertainmentViewHolder_Main> 
 
     private LayoutInflater mLayoutInflater;
     private List<EntertainmentBean> datas;
+    private OnItemClickListener mOnItemClickListener;
+
+
+    //创建单击回调接口
+    public interface OnItemClickListener {
+        void OnItemClick(View view, int position);
+    }
+
+
+    //创建回调单击方法
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+    }
 
 
     //创建构造函数
@@ -42,9 +55,17 @@ public class EntertainmentAdapter extends Adapter<EntertainmentViewHolder_Main> 
 
 
     @Override
-    public void onBindViewHolder(EntertainmentViewHolder_Main holder, int position) {
-        holder.tvtitle_entertainmentitem.setText(datas.get(position).getmItemName());
-        holder.imgicon_entertainmentitem.setImageResource(datas.get(position).getmImageResource());
+    public void onBindViewHolder(final EntertainmentViewHolder_Main holder, final int position) {
+        holder.tv_title_entertainmentitem.setText(datas.get(position).getmItemName());
+        holder.img_icon_entertainmentitem.setImageResource(datas.get(position).getmImageResource());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.OnItemClick(holder.itemView, position);
+                }
+            }
+        });
     }
 
 
@@ -57,12 +78,12 @@ public class EntertainmentAdapter extends Adapter<EntertainmentViewHolder_Main> 
 
 class EntertainmentViewHolder_Main extends RecyclerView.ViewHolder {
 
-    TextView tvtitle_entertainmentitem;
-    ImageView imgicon_entertainmentitem;
+    TextView tv_title_entertainmentitem;
+    ImageView img_icon_entertainmentitem;
 
     public EntertainmentViewHolder_Main(View itemView) {
         super(itemView);
-        tvtitle_entertainmentitem = (TextView) itemView.findViewById(R.id.tvtitle_entertainmentitem);
-        imgicon_entertainmentitem = (ImageView) itemView.findViewById(R.id.imgicon_entertainmentitem);
+        tv_title_entertainmentitem = (TextView) itemView.findViewById(R.id.tv_title_entertainmentitem);
+        img_icon_entertainmentitem = (ImageView) itemView.findViewById(R.id.img_icon_entertainmentitem);
     }
 }

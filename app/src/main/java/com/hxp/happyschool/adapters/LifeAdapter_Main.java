@@ -24,6 +24,19 @@ public class LifeAdapter_Main extends Adapter<LifeViewHolder_Main> {
 
     private LayoutInflater mLayoutInflater;
     private List<LifeBean> datas;
+    private OnItemClickListener mOnItemClickListener;
+
+
+    //创建单击回调接口
+    public interface OnItemClickListener {
+        void OnItemClick(View view, int position);
+    }
+
+
+    //创建回调单击方法
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+    }
 
 
     //创建构造函数
@@ -43,9 +56,17 @@ public class LifeAdapter_Main extends Adapter<LifeViewHolder_Main> {
 
 
     @Override
-    public void onBindViewHolder(LifeViewHolder_Main holder, int position) {
-        holder.tvtitle_lifeitem.setText(datas.get(position).getmItemName());
-        holder.imgicon_lifeitem.setImageResource(datas.get(position).getmImageResource());
+    public void onBindViewHolder(final LifeViewHolder_Main holder, final int position) {
+        holder.tv_title_lifeitem.setText(datas.get(position).getmItemName());
+        holder.img_icon_lifeitem.setImageResource(datas.get(position).getmImageResource());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.OnItemClick(holder.itemView, position);
+                }
+            }
+        });
     }
 
 
@@ -58,13 +79,13 @@ public class LifeAdapter_Main extends Adapter<LifeViewHolder_Main> {
 
 class LifeViewHolder_Main extends ViewHolder {
 
-    TextView tvtitle_lifeitem;
-    ImageView imgicon_lifeitem;
+    TextView tv_title_lifeitem;
+    ImageView img_icon_lifeitem;
 
     public LifeViewHolder_Main(View itemView) {
         super(itemView);
-        tvtitle_lifeitem = (TextView) itemView.findViewById(R.id.tvtitle_lifeitem);
-        imgicon_lifeitem = (ImageView) itemView.findViewById(R.id.imgicon_lifeitem);
+        tv_title_lifeitem = (TextView) itemView.findViewById(R.id.tv_title_lifeitem);
+        img_icon_lifeitem = (ImageView) itemView.findViewById(R.id.img_icon_lifeitem);
     }
 
 

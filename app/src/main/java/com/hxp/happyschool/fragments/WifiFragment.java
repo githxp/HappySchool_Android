@@ -1,7 +1,6 @@
 package com.hxp.happyschool.fragments;
 
 import android.app.Fragment;
-import android.content.res.Resources;
 import android.net.wifi.ScanResult;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -38,14 +37,12 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by hxp on 16-1-27.
  */
-public class LocationFragment extends Fragment implements OnClickListener, OnRefreshListener {
+public class WifiFragment extends Fragment implements OnClickListener, OnRefreshListener {
 
 
     //设置控件和成员变量
@@ -63,14 +60,14 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
     private FloatingActionButton fabPicture_location;
     private FloatingActionButton fabChart_location;
     private SwipeRefreshLayout swipeRefreshLayout_location;
-    Bluetooth_LocationFragment mBluetooth_LocationFragment;
+    BluetoothFragment mBluetooth_LocationFragment;
     private boolean mOnClick = true;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.location, container, false);
+        view = inflater.inflate(R.layout.wifi_location, container, false);
         return view;
     }
 
@@ -97,7 +94,7 @@ public class LocationFragment extends Fragment implements OnClickListener, OnRef
         fabChart_location.setOnClickListener(this);
         mWifiDetecter = new WifiDetecter(getActivity());
         mWifiBeanList = new ArrayList<WifiBean>();
-        mBluetooth_LocationFragment = new Bluetooth_LocationFragment();
+        mBluetooth_LocationFragment = new BluetoothFragment();
 
         //判断wifi状态
         if (mWifiDetecter.getWifiStatus() == 1 || mWifiDetecter.getWifiStatus() == 0) {

@@ -1,8 +1,11 @@
 package com.hxp.happyschool.beans;
 
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.List;
 
 
 /**
@@ -13,7 +16,6 @@ public class StudyBean {
 
     private String mItemName;
     private int mImageResource;
-
 
     public int getmImageResource() {
         return mImageResource;

@@ -1,6 +1,7 @@
 package com.hxp.happyschool.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,8 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.hxp.happyschool.R;
+import com.hxp.happyschool.activitys.ClassTableActivity;
+import com.hxp.happyschool.activitys.ClassUnionActivity;
+import com.hxp.happyschool.activitys.ExamActivity;
+import com.hxp.happyschool.activitys.LibraryActivity;
+import com.hxp.happyschool.activitys.ScoreActivity;
 import com.hxp.happyschool.adapters.StudyAdapter_Main;
 import com.hxp.happyschool.beans.StudyBean;
 
@@ -17,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by hxp on 16-2-2.
+ * 学习Fragment
  */
 public class StudyFragment extends Fragment {
 
@@ -30,6 +37,7 @@ public class StudyFragment extends Fragment {
     private StudyAdapter_Main mStudyAdapter_Main;
     private String[] strarrItenName_main;
     private int[] intarrImg_main;
+    private Intent mIntent;
 
 
     @Nullable
@@ -59,6 +67,41 @@ public class StudyFragment extends Fragment {
         }
         mStudyAdapter_Main = new StudyAdapter_Main(getActivity(), mStudyListDatas);
         rvStudy_main.setAdapter(mStudyAdapter_Main);
+        mStudyAdapter_Main.setOnItemClickListener(new StudyAdapter_Main.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int position) {
+                Toast.makeText(getActivity(), "123" + position, Toast.LENGTH_SHORT).show();
+                switch (position) {
+                    case 0:
+                        mIntent = new Intent(getActivity(), ClassUnionActivity.class);
+                        startActivity(mIntent);
+                        break;
+
+                    case 1:
+                        mIntent = new Intent(getActivity(), ClassTableActivity.class);
+                        startActivity(mIntent);
+                        break;
+
+                    case 2:
+                        mIntent = new Intent(getActivity(), LibraryActivity.class);
+                        startActivity(mIntent);
+                        break;
+
+                    case 3:
+                        mIntent = new Intent(getActivity(), ExamActivity.class);
+                        startActivity(mIntent);
+                        break;
+
+                    case 4:
+                        mIntent = new Intent(getActivity(), ScoreActivity.class);
+                        startActivity(mIntent);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        });
         LinearLayoutManager rvStudy_mainLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvStudy_main.setLayoutManager(rvStudy_mainLinearLayoutManager);
     }

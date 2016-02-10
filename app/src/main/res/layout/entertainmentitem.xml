@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    card_view:cardCornerRadius="8dp"
-    card_view:cardElevation="8dp"
-    android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground"
     android:layout_width="match_parent"
-    android:layout_height="180dp">
+    android:layout_height="100dp"
+    android:layout_marginBottom="6dp"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:layout_marginTop="6dp"
+    card_view:cardBackgroundColor="@color/colorAccent"
+    card_view:cardCornerRadius="3dp"
+    card_view:cardElevation="2dp">
 
 
     <RelativeLayout
@@ -16,7 +19,7 @@
 
 
         <ImageView
-            android:id="@+id/imgicon_entertainmentitem"
+            android:id="@+id/img_icon_entertainmentitem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -24,7 +27,7 @@
             android:src="@drawable/ic_studyrv_classunion" />
 
         <TextView
-            android:id="@+id/tvtitle_entertainmentitem"
+            android:id="@+id/tv_title_entertainmentitem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
