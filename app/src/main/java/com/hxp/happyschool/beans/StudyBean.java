@@ -17,6 +17,7 @@ public class StudyBean {
     private String mItemName;
     private int mImageResource;
 
+
     public int getmImageResource() {
         return mImageResource;
     }

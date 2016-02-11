@@ -27,7 +27,7 @@ import com.hxp.happyschool.beans.StudyBean;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/**娱乐Fragment
  * Created by hxp on 16-2-3.
  */
 public class EntertainmentFragment extends Fragment {
@@ -35,7 +35,7 @@ public class EntertainmentFragment extends Fragment {
 
     //定义成员变量
     private View view;
-    private RecyclerView rvEntertainment_main;
+    private RecyclerView rv_entertaiment_main;
     private List<EntertainmentBean> mEntertainmentListDatas;
     private EntertainmentBean mEntertainmentBean;
     private EntertainmentAdapter mEntertainmentAdapter_Main;
@@ -58,7 +58,7 @@ public class EntertainmentFragment extends Fragment {
 
 
         //初始化成员变量
-        rvEntertainment_main = (RecyclerView) getView().findViewById(R.id.rvEntertaiment_main);
+        rv_entertaiment_main = (RecyclerView) getView().findViewById(R.id.rv_entertaiment_main);
         mEntertainmentListDatas = new ArrayList<EntertainmentBean>();
         strarrItenName_main = new String[]{"微博", "头条"};
         intarrImg_main = new int[]{R.drawable.ic_studyrv_classunion, R.drawable.ic_studyrv_classtable};
@@ -69,7 +69,7 @@ public class EntertainmentFragment extends Fragment {
             mEntertainmentListDatas.add(mEntertainmentBean);
         }
         mEntertainmentAdapter_Main = new EntertainmentAdapter(getActivity(), mEntertainmentListDatas);
-        rvEntertainment_main.setAdapter(mEntertainmentAdapter_Main);
+        rv_entertaiment_main.setAdapter(mEntertainmentAdapter_Main);
         mEntertainmentAdapter_Main.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
@@ -91,7 +91,7 @@ public class EntertainmentFragment extends Fragment {
             }
         });
         LinearLayoutManager rvEntertainment_mainLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvEntertainment_main.setLayoutManager(rvEntertainment_mainLinearLayoutManager);
+        rv_entertaiment_main.setLayoutManager(rvEntertainment_mainLinearLayoutManager);
     }
 
 

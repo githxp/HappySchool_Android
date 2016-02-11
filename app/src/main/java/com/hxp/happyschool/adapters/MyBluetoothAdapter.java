@@ -19,7 +19,7 @@ import java.util.List;
  * Created by hxp on 16-1-23.
  */
 
-public class MyBluetoothAdapter extends Adapter<mBluetoothViewHolder> {
+public class MyBluetoothAdapter extends Adapter<BluetoothViewHolder> {
 
 
     private LayoutInflater mLayoutInflater;
@@ -35,17 +35,17 @@ public class MyBluetoothAdapter extends Adapter<mBluetoothViewHolder> {
     }
 
     @Override
-    public mBluetoothViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BluetoothViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View mView = mLayoutInflater.inflate(R.layout.bluetoothitem_location, parent, false);
-        mBluetoothViewHolder mmyViewHolder = new mBluetoothViewHolder(mView);
+        BluetoothViewHolder mmyViewHolder = new BluetoothViewHolder(mView);
         return mmyViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(mBluetoothViewHolder holder, int position) {
+    public void onBindViewHolder(BluetoothViewHolder holder, int position) {
         //mWifiBean = mBeans.get(position);
-        holder.tvBluetoothName_location.setText("蓝牙1");
-        holder.tvBluetoothDistance_location.setText("12米");
+        holder.tv_name_bluetoth_location.setText("蓝牙1");
+        holder.tv_distance_bluetooth_location.setText("12米");
     }
 
     @Override
@@ -55,15 +55,15 @@ public class MyBluetoothAdapter extends Adapter<mBluetoothViewHolder> {
 
 }
 
-class mBluetoothViewHolder extends RecyclerView.ViewHolder {
+class BluetoothViewHolder extends RecyclerView.ViewHolder {
 
-    TextView tvBluetoothName_location;
-    TextView tvBluetoothDistance_location;
+    TextView tv_name_bluetoth_location;
+    TextView tv_distance_bluetooth_location;
 
-    public mBluetoothViewHolder(View itemView) {
+    public BluetoothViewHolder(View itemView) {
         super(itemView);
-        tvBluetoothName_location = (TextView) itemView.findViewById(R.id.tvBluetoothName_location);
-        tvBluetoothDistance_location = (TextView) itemView.findViewById(R.id.tvBluetoothDistance_location);
+        tv_name_bluetoth_location = (TextView) itemView.findViewById(R.id.tv_name_bluetoth_location);
+        tv_distance_bluetooth_location = (TextView) itemView.findViewById(R.id.tv_distance_bluetooth_location);
     }
 }
 

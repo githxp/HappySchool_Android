@@ -14,9 +14,10 @@ import com.hxp.happyschool.beans.WifiBean;
 import java.util.List;
 
 /**
+ * wifi定位列表适配器
  * Created by hxp on 16-1-23.
  */
-public class WifiAdapter extends Adapter<myViewHolder> {
+public class WifiAdapter extends Adapter<WifiViewHolder_Main> {
 
 
     private LayoutInflater mLayoutInflater;
@@ -32,18 +33,18 @@ public class WifiAdapter extends Adapter<myViewHolder> {
     }
 
     @Override
-    public myViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public WifiViewHolder_Main onCreateViewHolder(ViewGroup parent, int viewType) {
         View mView = mLayoutInflater.inflate(R.layout.wifitem_location, parent, false);
-        myViewHolder mmyViewHolder = new myViewHolder(mView);
+        WifiViewHolder_Main mmyViewHolder = new WifiViewHolder_Main(mView);
         return mmyViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(myViewHolder holder, int position) {
+    public void onBindViewHolder(WifiViewHolder_Main holder, int position) {
         mWifiBean = mBeans.get(position);
-        holder.tvSsid_location.setText(mWifiBean.getSsid());
-        holder.tvAddress_location.setText(mWifiBean.getAddress());
-        holder.tvDistance_location.setText(mWifiBean.getDistance()+"米");
+        holder.tv_ssid_wifi_locationitem.setText(mWifiBean.getSsid());
+        holder.tv_address_wifi_locationitem.setText(mWifiBean.getAddress());
+        holder.tv_distance_wifi_locationitem.setText(mWifiBean.getDistance() + "米");
     }
 
     @Override
@@ -52,16 +53,16 @@ public class WifiAdapter extends Adapter<myViewHolder> {
     }
 }
 
-class myViewHolder extends ViewHolder {
+class WifiViewHolder_Main extends ViewHolder {
 
-    TextView tvSsid_location;
-    TextView tvAddress_location;
-    TextView tvDistance_location;
+    TextView tv_ssid_wifi_locationitem;
+    TextView tv_address_wifi_locationitem;
+    TextView tv_distance_wifi_locationitem;
 
-    public myViewHolder(View itemView) {
+    public WifiViewHolder_Main(View itemView) {
         super(itemView);
-        tvSsid_location = (TextView) itemView.findViewById(R.id.tvSsid_location);
-        tvAddress_location =(TextView) itemView.findViewById(R.id.tvAddress_location);
-        tvDistance_location = (TextView) itemView.findViewById(R.id.tvDistance_location);
+        tv_ssid_wifi_locationitem = (TextView) itemView.findViewById(R.id.tv_ssid_wifi_locationitem);
+        tv_address_wifi_locationitem = (TextView) itemView.findViewById(R.id.tv_address_wifi_locationitem);
+        tv_distance_wifi_locationitem = (TextView) itemView.findViewById(R.id.tv_distance_wifi_locationitem);
     }
 }

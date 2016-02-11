@@ -31,7 +31,7 @@ public class StudyFragment extends Fragment {
 
     //定义成员变量
     private View view;
-    private RecyclerView rvStudy_main;
+    private RecyclerView rv_study_main;
     private List<StudyBean> mStudyListDatas;
     private StudyBean mStudyBean;
     private StudyAdapter_Main mStudyAdapter_Main;
@@ -54,7 +54,7 @@ public class StudyFragment extends Fragment {
 
 
         //初始化成员变量
-        rvStudy_main = (RecyclerView) getView().findViewById(R.id.rvStudy_main);
+        rv_study_main = (RecyclerView) getView().findViewById(R.id.rv_study_main);
         mStudyListDatas = new ArrayList<StudyBean>();
         strarrItenName_main = new String[]{"课堂", "课表", "书馆", "考场", "成绩"};
         intarrImg_main = new int[]{R.drawable.ic_studyrv_classunion, R.drawable.ic_studyrv_classtable,
@@ -66,7 +66,7 @@ public class StudyFragment extends Fragment {
             mStudyListDatas.add(mStudyBean);
         }
         mStudyAdapter_Main = new StudyAdapter_Main(getActivity(), mStudyListDatas);
-        rvStudy_main.setAdapter(mStudyAdapter_Main);
+        rv_study_main.setAdapter(mStudyAdapter_Main);
         mStudyAdapter_Main.setOnItemClickListener(new StudyAdapter_Main.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
@@ -103,7 +103,7 @@ public class StudyFragment extends Fragment {
             }
         });
         LinearLayoutManager rvStudy_mainLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvStudy_main.setLayoutManager(rvStudy_mainLinearLayoutManager);
+        rv_study_main.setLayoutManager(rvStudy_mainLinearLayoutManager);
     }
 
 

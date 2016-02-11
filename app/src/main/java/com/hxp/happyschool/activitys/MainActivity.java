@@ -54,7 +54,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private boolean isStudyClicked;
     private boolean isLifeClicked;
     private boolean isEntertainmentClicked;
-    private boolean isMorecliCked;
+    private boolean isMoreCliCked;
 
     //数据库实现类
     private DatabaseImplement mDatabaseImplement;
@@ -109,7 +109,7 @@ public class MainActivity extends Activity implements OnClickListener {
         isStudyClicked = true;
         isLifeClicked = true;
         isEntertainmentClicked = true;
-        isMorecliCked = true;
+        isMoreCliCked = true;
 
         //数据库实现类
         mDatabaseImplement = new DatabaseImplement(this.getApplicationContext());
@@ -150,14 +150,24 @@ public class MainActivity extends Activity implements OnClickListener {
             case R.id.linearlayout_studyTab_main:
                 if (isStudyClicked) {
                     Log.d("click", "studyclick");
+
+                    //恢复初始颜色
                     backInitColor();
+
+                    //加载tab按下时图片+文字的显示状态
                     img_studyTab_main.setImageResource(R.drawable.ic_buttombar_study_pressed);
                     tv_studyTab_main.setTextColor(getResources().getColor(R.color.primaryBlue));
+
+                    //恢复初始fragment显示状态
                     backInitFragment();
+
+                    //加载tab按下时Fragment的显示状态
                     getFragmentManager().beginTransaction().show(mStudyFragment).commit();
+
+                    //重置底部tab点击标记
                     isLifeClicked = true;
                     isEntertainmentClicked = true;
-                    isMorecliCked = true;
+                    isMoreCliCked = true;
                     isStudyClicked = false;
                 }
                 break;
@@ -182,7 +192,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     //重置底部tab点击标记
                     isStudyClicked = true;
                     isEntertainmentClicked = true;
-                    isMorecliCked = true;
+                    isMoreCliCked = true;
                     isLifeClicked = false;
                 }
                 break;
@@ -207,13 +217,13 @@ public class MainActivity extends Activity implements OnClickListener {
                     //重置底部tab点击标记
                     isStudyClicked = true;
                     isLifeClicked = true;
-                    isMorecliCked = true;
+                    isMoreCliCked = true;
                     isEntertainmentClicked = false;
                 }
                 break;
 
             case R.id.linearlayout_moreTab_main:
-                if (isMorecliCked) {
+                if (isMoreCliCked) {
                     Log.d("click", "moretclick");
 
                     //恢复初始颜色
@@ -230,7 +240,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     isStudyClicked = true;
                     isLifeClicked = true;
                     isEntertainmentClicked = true;
-                    isMorecliCked = false;
+                    isMoreCliCked = false;
                 }
                 break;
 

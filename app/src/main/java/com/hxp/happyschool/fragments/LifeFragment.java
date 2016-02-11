@@ -22,7 +22,7 @@ import com.hxp.happyschool.beans.LifeBean;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/**生活Fragment
  * Created by hxp on 16-2-3.
  */
 public class LifeFragment extends Fragment {
@@ -30,7 +30,7 @@ public class LifeFragment extends Fragment {
 
     //定义成员变量
     private View view;
-    private RecyclerView rvLife_main;
+    private RecyclerView rv_life_main;
     private List<LifeBean> mLifeListDatas;
     private LifeBean mLifeBean;
     private LifeAdapter_Main mLifeAdapter_Main;
@@ -52,7 +52,7 @@ public class LifeFragment extends Fragment {
 
 
         //初始化成员变量
-        rvLife_main = (RecyclerView) getView().findViewById(R.id.rvLife_main);
+        rv_life_main = (RecyclerView) getView().findViewById(R.id.rv_life_main);
         mLifeListDatas = new ArrayList<LifeBean>();
         strarrItenName_main = new String[]{"地图", "位置", "食堂"};
         intarrImg_main = new int[]{R.drawable.ic_studyrv_library, R.drawable.ic_studyrv_exam, R.drawable.ic_studyrv_score};
@@ -63,7 +63,7 @@ public class LifeFragment extends Fragment {
             mLifeListDatas.add(mLifeBean);
         }
         mLifeAdapter_Main = new LifeAdapter_Main(getActivity(), mLifeListDatas);
-        rvLife_main.setAdapter(mLifeAdapter_Main);
+        rv_life_main.setAdapter(mLifeAdapter_Main);
         mLifeAdapter_Main.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
@@ -90,6 +90,6 @@ public class LifeFragment extends Fragment {
             }
         });
         LinearLayoutManager rvLife_mainLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvLife_main.setLayoutManager(rvLife_mainLinearLayoutManager);
+        rv_life_main.setLayoutManager(rvLife_mainLinearLayoutManager);
     }
 }

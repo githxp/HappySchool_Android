@@ -6,7 +6,7 @@
 
 
     <TextView
-        android:id="@+id/tvBluetoothName_location"
+        android:id="@+id/tv_name_bluetoth_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -17,7 +17,7 @@
         android:textSize="@dimen/title_wifitem_leader_xhdpi" />
 
     <TextView
-        android:id="@+id/tvBluetoothDistance_location"
+        android:id="@+id/tv_distance_bluetooth_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

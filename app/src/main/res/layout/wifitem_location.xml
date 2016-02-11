@@ -5,7 +5,7 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/tvSsid_location"
+        android:id="@+id/tv_ssid_wifi_locationitem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -16,14 +16,14 @@
 
 
     <RelativeLayout
-        android:id="@+id/relativeLayoutAddress_location"
+        android:id="@+id/relativelayout_address_wifi_location"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvSsid_location"
+        android:layout_below="@+id/tv_ssid_wifi_locationitem"
         android:layout_marginTop="8dp">
 
         <TextView
-            android:id="@+id/tvAddress_location"
+            android:id="@+id/tv_address_wifi_locationitem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -35,11 +35,11 @@
 
 
     <TextView
-        android:id="@+id/tvDistance_location"
+        android:id="@+id/tv_distance_wifi_locationitem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/relativeLayoutAddress_location"
+        android:layout_alignTop="@+id/relativelayout_address_wifi_location"
         android:background="@color/primaryBlue"
         android:textColor="@color/second"
         android:textSize="@dimen/address_wifitem_leader_xhdpi" />

@@ -7,7 +7,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/layoutBluetoothFail_location"
+        android:id="@+id/relativelayout_bluetoothFail_bluetooth_location"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
@@ -15,13 +15,13 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btnOpenBluetooth_location"
+            android:layout_above="@+id/btn_openBluetooth_bluetooth_location"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
             android:src="@drawable/ic_location_bluetoothfail" />
 
         <Button
-            android:id="@+id/btnOpenBluetooth_location"
+            android:id="@+id/btn_openBluetooth_bluetooth_location"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -33,7 +33,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/layoutBluetoothLoading_location"
+        android:id="@+id/relativelayout_bluetoothLoading_bluetooth_location"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible">
@@ -41,13 +41,13 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/tvWifiLoading_location"
+            android:layout_above="@+id/tv_bluetoothLoading_bluetooth_location"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
             android:src="@drawable/ic_location_bluetoothloading" />
 
         <TextView
-            android:id="@+id/tvWifiLoading_location"
+            android:id="@+id/tv_bluetoothLoading_bluetooth_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -59,13 +59,13 @@
 
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayoutBluetooth_location"
+        android:id="@+id/swiperefresh_bluetoothList_bluetooth_location"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvBluetooth_location"
+            android:id="@+id/rv_bluetooth_bluetooth_location"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"></android.support.v7.widget.RecyclerView>

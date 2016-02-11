@@ -24,6 +24,7 @@ import com.hxp.happyschool.R;
 import com.hxp.happyschool.adapters.MyBluetoothAdapter;
 
 /**
+ * 蓝牙Fragment
  * Created by hxp on 16-1-31.
  */
 public class BluetoothFragment extends Fragment implements OnClickListener {
@@ -31,12 +32,12 @@ public class BluetoothFragment extends Fragment implements OnClickListener {
 
     //定义成员变量
     private View view;
-    private RecyclerView rvBluetooth_location;
-    private SwipeRefreshLayout swipeRefreshLayoutBluetooth_location;
-    private RelativeLayout layoutBluetoothFail_location;
-    private RelativeLayout layoutBluetoothLoading_location;
+    private RecyclerView rv_bluetooth_bluetooth_location;
+    private SwipeRefreshLayout swiperefresh_bluetoothList_bluetooth_location;
+    private RelativeLayout relativelayout_bluetoothFail_bluetooth_location;
+    private RelativeLayout relativelayout_bluetoothLoading_bluetooth_location;
     private BluetoothAdapter mBluetoothAdapter;
-    private Button btnOpenBluetooth_location;
+    private Button btn_openBluetooth_bluetooth_location;
     private BroadcastReceiver mBroadcastReceiver;
     private IntentFilter mIntentFilterFound;
     private IntentFilter mIntentFilterFinished;
@@ -56,18 +57,16 @@ public class BluetoothFragment extends Fragment implements OnClickListener {
         super.onActivityCreated(savedInstanceState);
 
 
-
-
         //初始化成员变量
-        swipeRefreshLayoutBluetooth_location = (SwipeRefreshLayout) getView().findViewById(R.id.swipeRefreshLayoutBluetooth_location);
-        rvBluetooth_location = (RecyclerView) getView().findViewById(R.id.rvBluetooth_location);
+        swiperefresh_bluetoothList_bluetooth_location = (SwipeRefreshLayout) getView().findViewById(R.id.swiperefresh_bluetoothList_bluetooth_location);
+        rv_bluetooth_bluetooth_location = (RecyclerView) getView().findViewById(R.id.rv_bluetooth_bluetooth_location);
         mMyBluetoothAdapter = new MyBluetoothAdapter(getActivity());
-        rvBluetooth_location.setAdapter(mMyBluetoothAdapter);
-        layoutBluetoothFail_location = (RelativeLayout) getView().findViewById(R.id.layoutBluetoothFail_location);
-        layoutBluetoothLoading_location = (RelativeLayout) getView().findViewById(R.id.layoutBluetoothLoading_location);
+        rv_bluetooth_bluetooth_location.setAdapter(mMyBluetoothAdapter);
+        relativelayout_bluetoothFail_bluetooth_location = (RelativeLayout) getView().findViewById(R.id.relativelayout_bluetoothFail_bluetooth_location);
+        relativelayout_bluetoothLoading_bluetooth_location = (RelativeLayout) getView().findViewById(R.id.relativelayout_bluetoothLoading_bluetooth_location);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        btnOpenBluetooth_location = (Button) getView().findViewById(R.id.btnOpenBluetooth_location);
-        btnOpenBluetooth_location.setOnClickListener(this);
+        btn_openBluetooth_bluetooth_location = (Button) getView().findViewById(R.id.btn_openBluetooth_bluetooth_location);
+        btn_openBluetooth_bluetooth_location.setOnClickListener(this);
         mIntentFilterFound = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         mIntentFilterFinished = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         getActivity().registerReceiver(mBroadcastReceiver, mIntentFilterFound);
@@ -79,9 +78,9 @@ public class BluetoothFragment extends Fragment implements OnClickListener {
                     Log.d("bluetooth", "找到设备");
                 } else if (intent.getAction().equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)) {
                     Log.d("bluetooth", "扫描完成");
-                    layoutBluetoothLoading_location.setVisibility(View.GONE);
-                    rvBluetooth_location.setVisibility(View.VISIBLE);
-                    swipeRefreshLayoutBluetooth_location.setVisibility(View.VISIBLE);
+                    relativelayout_bluetoothLoading_bluetooth_location.setVisibility(View.GONE);
+                    rv_bluetooth_bluetooth_location.setVisibility(View.VISIBLE);
+                    swiperefresh_bluetoothList_bluetooth_location.setVisibility(View.VISIBLE);
                 }
             }
         };
@@ -91,8 +90,8 @@ public class BluetoothFragment extends Fragment implements OnClickListener {
         if (mBluetoothAdapter.isEnabled()) {
             mBluetoothAdapter.startDiscovery();
         } else {
-            layoutBluetoothLoading_location.setVisibility(View.GONE);
-            layoutBluetoothFail_location.setVisibility(View.VISIBLE);
+            relativelayout_bluetoothLoading_bluetooth_location.setVisibility(View.GONE);
+            relativelayout_bluetoothFail_bluetooth_location.setVisibility(View.VISIBLE);
         }
     }
 
@@ -101,10 +100,10 @@ public class BluetoothFragment extends Fragment implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnOpenBluetooth_location:
+            case R.id.btn_openBluetooth_bluetooth_location:
                 mBluetoothAdapter.enable();
-                layoutBluetoothFail_location.setVisibility(View.GONE);
-                layoutBluetoothLoading_location.setVisibility(View.VISIBLE);
+                relativelayout_bluetoothFail_bluetooth_location.setVisibility(View.GONE);
+                relativelayout_bluetoothLoading_bluetooth_location.setVisibility(View.VISIBLE);
                 break;
         }
     }

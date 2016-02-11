@@ -5,7 +5,6 @@ import android.net.wifi.ScanResult;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +16,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.hxp.happyschool.R;
 import com.hxp.happyschool.adapters.WifiAdapter;
@@ -40,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * wifiFragment
  * Created by hxp on 16-1-27.
  */
 public class WifiFragment extends Fragment implements OnClickListener, OnRefreshListener {
@@ -47,21 +46,17 @@ public class WifiFragment extends Fragment implements OnClickListener, OnRefresh
 
     //设置控件和成员变量
     private View view;
-    private RecyclerView rvWifi_location;
+    private RecyclerView rv_wifi_wifi_location;
     private WifiDetecter mWifiDetecter;
     private WifiAdapter mWifiAdapter;
     private List<WifiBean> mWifiBeanList;
     private List<ScanResult> mWifiList;
     private WifiBean mWifiBean;
-    private RelativeLayout layoutWifiFail_location;
-    private RelativeLayout layoutWifiLoading_location;
-    private Button btnOpenWifi_location;
-    private FloatingActionButton fabBluetooth_location;
-    private FloatingActionButton fabPicture_location;
-    private FloatingActionButton fabChart_location;
-    private SwipeRefreshLayout swipeRefreshLayout_location;
-    BluetoothFragment mBluetooth_LocationFragment;
-    private boolean mOnClick = true;
+    private RelativeLayout relativelayout_wifiFail_wifi_location;
+    private RelativeLayout relativelayout_wifiLoading_wifi_location;
+    private Button btn_openWifi_wifi_location;
+    private SwipeRefreshLayout swiperefresh_wifiList_wifi_location;
+    private WifiAddressAsyncTask mWifiAddressAsyncTask;
 
 
     @Nullable
@@ -78,40 +73,50 @@ public class WifiFragment extends Fragment implements OnClickListener, OnRefresh
         super.onActivityCreated(savedInstanceState);
 
         //初始化控件和成员变量
-        rvWifi_location = (RecyclerView) getView().findViewById(R.id.rvWifi_location);
-        btnOpenWifi_location = (Button) getView().findViewById(R.id.btnOpenWifi_location);
-        fabBluetooth_location = (FloatingActionButton) getView().findViewById(R.id.fabBluetooth_location);
-        fabPicture_location = (FloatingActionButton) getView().findViewById(R.id.fabPicture_location);
-        fabChart_location = (FloatingActionButton) getView().findViewById(R.id.fabChart_location);
-        layoutWifiFail_location = (RelativeLayout) getView().findViewById(R.id.layoutWifiFail_location);
-        layoutWifiLoading_location = (RelativeLayout) getView().findViewById(R.id.layoutWifiLoading_location);
-        swipeRefreshLayout_location = (SwipeRefreshLayout) getView().findViewById(R.id.swipeRefreshLayout_location);
-        swipeRefreshLayout_location.setColorSchemeResources(R.color.primaryBlue, R.color.primaryGreen, R.color.primaryRed);
-        swipeRefreshLayout_location.setOnRefreshListener(this);
-        btnOpenWifi_location.setOnClickListener(this);
-        fabBluetooth_location.setOnClickListener(this);
-        fabPicture_location.setOnClickListener(this);
-        fabChart_location.setOnClickListener(this);
+        rv_wifi_wifi_location = (RecyclerView) getView().findViewById(R.id.rv_wifi_wifi_location);
+        btn_openWifi_wifi_location = (Button) getView().findViewById(R.id.btn_openWifi_wifi_location);
+        relativelayout_wifiFail_wifi_location = (RelativeLayout) getView().findViewById(R.id.relativelayout_wifiFail_wifi_location);
+        relativelayout_wifiLoading_wifi_location = (RelativeLayout) getView().findViewById(R.id.relativelayout_wifiLoading_wifi_location);
+        swiperefresh_wifiList_wifi_location = (SwipeRefreshLayout) getView().findViewById(R.id.swiperefresh_wifiList_wifi_location);
+        swiperefresh_wifiList_wifi_location.setColorSchemeResources(R.color.primaryBlue, R.color.primaryGreen, R.color.primaryRed);
+        swiperefresh_wifiList_wifi_location.setOnRefreshListener(this);
+        btn_openWifi_wifi_location.setOnClickListener(this);
         mWifiDetecter = new WifiDetecter(getActivity());
         mWifiBeanList = new ArrayList<WifiBean>();
-        mBluetooth_LocationFragment = new BluetoothFragment();
+        mWifiAddressAsyncTask = new WifiAddressAsyncTask();
 
         //判断wifi状态
+        //wifi不可用
         if (mWifiDetecter.getWifiStatus() == 1 || mWifiDetecter.getWifiStatus() == 0) {
             //wifi不可用时显示打开wifi界面布局
             showOpenWifiLayout();
-        } else {
-            getMacAndSsid();
-            //wifi可用时异步获取服务器wifi地址并显示
-            new WifiAddressAsyncTask().execute(mWifiBeanList);
+        } else if (mWifiAddressAsyncTask.getStatus() == AsyncTask.Status.RUNNING) {
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    while (mWifiAddressAsyncTask.getStatus() == AsyncTask.Status.RUNNING) {
+                        try {
+                            sleep(300);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }.start();
         }
+        //获取mac和ssid数据
+        getMacAndSsid();
+
+        //wifi可用时异步获取服务器wifi地址并显示
+        mWifiAddressAsyncTask.execute(mWifiBeanList);
     }
 
 
     //定义显示打开wifi界面布局方法
     public void showOpenWifiLayout() {
-        layoutWifiLoading_location.setVisibility(View.GONE);
-        layoutWifiFail_location.setVisibility(View.VISIBLE);
+        relativelayout_wifiLoading_wifi_location.setVisibility(View.GONE);
+        relativelayout_wifiFail_wifi_location.setVisibility(View.VISIBLE);
     }
 
 
@@ -137,11 +142,11 @@ public class WifiFragment extends Fragment implements OnClickListener, OnRefresh
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.btnOpenWifi_location:
+            case R.id.btn_openWifi_wifi_location:
                 //打开wifi
                 mWifiDetecter.setWifiOpen();
-                layoutWifiFail_location.setVisibility(View.GONE);
-                layoutWifiLoading_location.setVisibility(View.VISIBLE);
+                relativelayout_wifiFail_wifi_location.setVisibility(View.GONE);
+                relativelayout_wifiLoading_wifi_location.setVisibility(View.VISIBLE);
                 new Thread() {
                     @Override
                     public void run() {
@@ -162,44 +167,6 @@ public class WifiFragment extends Fragment implements OnClickListener, OnRefresh
                     }
                 }.start();
                 break;
-
-            case R.id.fabBluetooth_location:
-                if (mOnClick) {
-                    swipeRefreshLayout_location.setVisibility(View.GONE);
-                    rvWifi_location.setVisibility(View.GONE);
-                    layoutWifiFail_location.setVisibility(View.GONE);
-                    layoutWifiLoading_location.setVisibility(View.GONE);
-                    //第一次添加蓝牙Fragment
-                    getFragmentManager().beginTransaction().add(R.id.layoutLocaton, mBluetooth_LocationFragment).commit();
-                    fabBluetooth_location.setImageResource(R.drawable.ic_location_wifi);
-                    mOnClick = false;
-                } else {
-                    if (mWifiDetecter.getWifiStatus() == 1 || mWifiDetecter.getWifiStatus() == 0) {
-                        layoutWifiFail_location.setVisibility(View.VISIBLE);
-                    } else {
-                        swipeRefreshLayout_location.setVisibility(View.VISIBLE);
-                        rvWifi_location.setVisibility(View.VISIBLE);
-                        //layoutWifiLoading_location.setVisibility(View.VISIBLE);
-                    }
-                    getFragmentManager().beginTransaction().remove(mBluetooth_LocationFragment).commit();
-                    fabBluetooth_location.setImageResource(R.drawable.ic_location_bluetooth);
-                    mOnClick = true;
-                }
-
-
-                break;
-
-            case R.id.fabPicture_location:
-                Toast.makeText(getActivity(), "ok2", Toast.LENGTH_SHORT).show();
-
-                break;
-
-            case R.id.fabChart_location:
-                Toast.makeText(getActivity(), "ok3", Toast.LENGTH_SHORT).show();
-
-                break;
-            default:
-                break;
         }
     }
 
@@ -209,11 +176,11 @@ public class WifiFragment extends Fragment implements OnClickListener, OnRefresh
     public void onRefresh() {
         if (mWifiDetecter.getWifiStatus() == 1 || mWifiDetecter.getWifiStatus() == 0) {
             //wifi不可用时显示打开wifi界面布局
-            layoutWifiLoading_location.setVisibility(View.GONE);
-            rvWifi_location.setVisibility(View.GONE);
-            swipeRefreshLayout_location.setVisibility(View.GONE);
-            layoutWifiFail_location.setVisibility(View.VISIBLE);
-            swipeRefreshLayout_location.setRefreshing(false);
+            relativelayout_wifiLoading_wifi_location.setVisibility(View.GONE);
+            rv_wifi_wifi_location.setVisibility(View.GONE);
+            swiperefresh_wifiList_wifi_location.setVisibility(View.GONE);
+            relativelayout_wifiFail_wifi_location.setVisibility(View.VISIBLE);
+            swiperefresh_wifiList_wifi_location.setRefreshing(false);
         } else {
             Log.d("流程控制", "刷新方法");
             mWifiList.clear();
@@ -224,7 +191,7 @@ public class WifiFragment extends Fragment implements OnClickListener, OnRefresh
     }
 
 
-    //异步获取服务器wifi地址并显示
+    //定义异步获取服务器wifi地址并显示内部类
     private class WifiAddressAsyncTask extends AsyncTask<List<WifiBean>, Void, List<WifiBean>> {
 
 
@@ -305,13 +272,13 @@ public class WifiFragment extends Fragment implements OnClickListener, OnRefresh
             Log.d("流程控制", "onPostExecute");
             super.onPostExecute(list);
             mWifiAdapter = new WifiAdapter(getActivity(), list);
-            rvWifi_location.setAdapter(mWifiAdapter);
+            rv_wifi_wifi_location.setAdapter(mWifiAdapter);
             LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-            rvWifi_location.setLayoutManager(mLinearLayoutManager);
-            swipeRefreshLayout_location.setVisibility(View.VISIBLE);
-            swipeRefreshLayout_location.setRefreshing(false);
-            rvWifi_location.setVisibility(View.VISIBLE);
-            layoutWifiLoading_location.setVisibility(View.GONE);
+            rv_wifi_wifi_location.setLayoutManager(mLinearLayoutManager);
+            relativelayout_wifiLoading_wifi_location.setVisibility(View.GONE);
+            swiperefresh_wifiList_wifi_location.setVisibility(View.VISIBLE);
+            swiperefresh_wifiList_wifi_location.setRefreshing(false);
+            rv_wifi_wifi_location.setVisibility(View.VISIBLE);
         }
     }
 }

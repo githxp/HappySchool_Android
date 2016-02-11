@@ -9,5 +9,9 @@
     <string name="lifeMainButtomBar">生活</string>
     <string name="entertainmentMainButtomBar">娱乐</string>
     <string name="moreMainButtomBar">更多</string>
+    <string name="wifiLocationButtomBar">WiFi位置</string>
+    <string name="bluetoothLocationButtomBar">蓝牙位置</string>
+    <string name="pictureLocationButtomBar">图像位置</string>
+    <string name="chartLocationButtomBar">位置地图</string>
 
 </resources>
