@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.hxp.happyschool.R;
 import com.hxp.happyschool.fragments.BluetoothFragment;
+import com.hxp.happyschool.fragments.PictureFragment;
 import com.hxp.happyschool.fragments.WifiFragment;
 
 /**
@@ -45,6 +46,7 @@ public class LocationActivity extends Activity implements OnClickListener {
     //中间Fragment
     private WifiFragment mWifiFragment;
     private BluetoothFragment mBluetoothFragment;
+    private PictureFragment mPictureFragment;
 
     //底部tab点击标记
     private boolean isWifiClicked;
@@ -93,6 +95,7 @@ public class LocationActivity extends Activity implements OnClickListener {
         //中间Fragment
         mWifiFragment = new WifiFragment();
         mBluetoothFragment = new BluetoothFragment();
+        mPictureFragment = new PictureFragment();
 
         //底部tab点击标记
         isWifiClicked = true;
@@ -109,13 +112,15 @@ public class LocationActivity extends Activity implements OnClickListener {
         linearlayout_pictureTab_location.setOnClickListener(this);
         linearlayout_chartTab_location.setOnClickListener(this);
 
-        //预加载主界面StudyFragment+LifeFragment+EntertainmentFragment
+        //预加载WifiFragment+LifeFragment+PictureFragment+ChartFragment
         getFragmentManager().beginTransaction().add(R.id.linearlayout_fragmentContent_location, mWifiFragment).commit();
         getFragmentManager().beginTransaction().add(R.id.linearlayout_fragmentContent_location, mBluetoothFragment).commit();
+        getFragmentManager().beginTransaction().add(R.id.linearlayout_fragmentContent_location, mPictureFragment).commit();
 
-        //隐藏LifeFragment+EntertainmentFragment
-        getFragmentManager().beginTransaction().hide(mBluetoothFragment).commit();
+        //隐藏WifiFragment+LifeFragment+PictureFragment+ChartFragment
         getFragmentManager().beginTransaction().hide(mWifiFragment).commit();
+        getFragmentManager().beginTransaction().hide(mBluetoothFragment).commit();
+        getFragmentManager().beginTransaction().hide(mPictureFragment).commit();
     }
 
 
@@ -193,7 +198,7 @@ public class LocationActivity extends Activity implements OnClickListener {
                     backInitFragment();
 
                     //加载tab按下时Fragment的显示状态
-                    //getFragmentManager().beginTransaction().show(mEntertainmentFragment).commit();
+                    getFragmentManager().beginTransaction().show(mPictureFragment).commit();
 
                     //重置底部tab点击标记
                     isWifiClicked = true;
@@ -235,6 +240,7 @@ public class LocationActivity extends Activity implements OnClickListener {
     private void backInitFragment() {
         getFragmentManager().beginTransaction().hide(mWifiFragment).commit();
         getFragmentManager().beginTransaction().hide(mBluetoothFragment).commit();
+        getFragmentManager().beginTransaction().hide(mPictureFragment).commit();
     }
 
 

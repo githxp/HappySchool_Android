@@ -129,7 +129,8 @@ public class MainActivity extends Activity implements OnClickListener {
         getFragmentManager().beginTransaction().add(R.id.linearlayout_fragmentContent_main, mLifeFragment).commit();
         getFragmentManager().beginTransaction().add(R.id.linearlayout_fragmentContent_main, mEntertainmentFragment).commit();
 
-        //隐藏LifeFragment+EntertainmentFragment
+        //隐藏StudyFragment+LifeFragment+EntertainmentFragment
+        getFragmentManager().beginTransaction().hide(mStudyFragment).commit();
         getFragmentManager().beginTransaction().hide(mLifeFragment).commit();
         getFragmentManager().beginTransaction().hide(mEntertainmentFragment).commit();
     }

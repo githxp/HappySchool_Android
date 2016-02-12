@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,6 +63,8 @@ public class BluetoothFragment extends Fragment implements OnClickListener {
         rv_bluetooth_bluetooth_location = (RecyclerView) getView().findViewById(R.id.rv_bluetooth_bluetooth_location);
         mMyBluetoothAdapter = new MyBluetoothAdapter(getActivity());
         rv_bluetooth_bluetooth_location.setAdapter(mMyBluetoothAdapter);
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rv_bluetooth_bluetooth_location.setLayoutManager(mLinearLayoutManager);
         relativelayout_bluetoothFail_bluetooth_location = (RelativeLayout) getView().findViewById(R.id.relativelayout_bluetoothFail_bluetooth_location);
         relativelayout_bluetoothLoading_bluetooth_location = (RelativeLayout) getView().findViewById(R.id.relativelayout_bluetoothLoading_bluetooth_location);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -69,8 +72,6 @@ public class BluetoothFragment extends Fragment implements OnClickListener {
         btn_openBluetooth_bluetooth_location.setOnClickListener(this);
         mIntentFilterFound = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         mIntentFilterFinished = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        getActivity().registerReceiver(mBroadcastReceiver, mIntentFilterFound);
-        getActivity().registerReceiver(mBroadcastReceiver, mIntentFilterFinished);
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -84,6 +85,8 @@ public class BluetoothFragment extends Fragment implements OnClickListener {
                 }
             }
         };
+        getActivity().registerReceiver(mBroadcastReceiver, mIntentFilterFound);
+        getActivity().registerReceiver(mBroadcastReceiver, mIntentFilterFinished);
 
 
         //根据蓝牙是否打开显示相应界面
