@@ -2,12 +2,16 @@ package com.hxp.happyschool.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,11 +21,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.hxp.happyschool.R;
+import com.hxp.happyschool.utils.FileOperate;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * 图像定位Fragment
@@ -36,22 +42,8 @@ public class PictureFragment extends Fragment implements OnClickListener, Surfac
     private Button btn_openCamera_picture_location;
     private Camera mCamera;
     private SurfaceHolder mSurfaceHolder;
-    private Camera.PictureCallback mCameraPictureCallback = new Camera.PictureCallback() {
-        @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
-            String mPath = Environment.getExternalStorageDirectory().getPath();
-            File mFile = new File(mPath + "/HappySchool/Location/Picture/temp.jpg");
-            try {
-                FileOutputStream mFileOutputStream = new FileOutputStream(mFile);
-                mFileOutputStream.write(data);
-                mFileOutputStream.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    };
+    private FileOperate mFileOperate;
+    private Camera.PictureCallback mCameraPictureCallback;
 
 
     @Nullable
@@ -68,11 +60,57 @@ public class PictureFragment extends Fragment implements OnClickListener, Surfac
         //初始化控件和成员变量
         surfaceview_camera_picture_location = (SurfaceView) getView().findViewById(R.id.surfaceview_camera_picture_location);
         btn_openCamera_picture_location = (Button) getView().findViewById(R.id.btn_openCamera_picture_location);
+        mFileOperate = new FileOperate();
         getCamera();
         mSurfaceHolder = surfaceview_camera_picture_location.getHolder();
         mSurfaceHolder.addCallback(this);
         startCameraPreview(mCamera, mSurfaceHolder);
         btn_openCamera_picture_location.setOnClickListener(this);
+        surfaceview_camera_picture_location.setOnClickListener(this);
+        mCameraPictureCallback = new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+
+                //设置子目录路径
+                String childDirectoryPath = "Location" + File.separator + "Picture";
+
+                //创建照片保存文件夹
+                mFileOperate.createChildDirectory(childDirectoryPath);
+
+                //创建要保存文件File对象
+                File mPictureSaveFile = new File(mFileOperate.mPath + File.separator + childDirectoryPath + File.separator + "temp.jpg");
+
+                //创建拍照图片Bitmap对象
+                Bitmap mBitmapResource = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+                //创建要保存图片Bitmap对象
+                Bitmap mBitmapToSave = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+                //创建Matrix对象mMatrix
+                Matrix mMatrix = new Matrix();
+
+                //设置mMatrix旋转90度
+                mMatrix.setRotate(90, mBitmapResource.getWidth() / 2, mBitmapResource.getHeight() / 2);
+
+                //创建要保存图片Bitmap
+                mBitmapToSave = Bitmap.createBitmap(mBitmapResource, 0, 0, mBitmapResource.getWidth(), mBitmapResource.getHeight(), mMatrix, true);
+
+
+                Log.d("click", "file");
+                try {
+                    if (mPictureSaveFile.exists()) {
+                        mPictureSaveFile.delete();
+                    }
+                    FileOutputStream mFileOutputStream = new FileOutputStream(mPictureSaveFile);
+                    mBitmapToSave.compress(Bitmap.CompressFormat.JPEG, 50, mFileOutputStream);
+                    mFileOutputStream.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
     }
 
 
@@ -85,8 +123,12 @@ public class PictureFragment extends Fragment implements OnClickListener, Surfac
                 //Camera拍照功能
                 getCameraPicture();
 
-                //释放Camera资源
-                releaseCamera();
+                //开始预览Camera
+                //startCameraPreview(mCamera, mSurfaceHolder);
+                break;
+
+            case R.id.surfaceview_camera_picture_location:
+                mCamera.autoFocus(null);
                 break;
         }
     }
@@ -117,6 +159,8 @@ public class PictureFragment extends Fragment implements OnClickListener, Surfac
         //设置对焦模式为自动对焦
         mCameraParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
 
+        mCamera.setParameters(mCameraParameters);
+
         //开启拍照功能
         mCamera.takePicture(null, null, mCameraPictureCallback);
     }
@@ -135,7 +179,7 @@ public class PictureFragment extends Fragment implements OnClickListener, Surfac
 
 
     //定义释放Camera资源方法
-    private void releaseCamera() {
+    public void releaseCamera() {
         if (mCamera != null) {
             mCamera.setPreviewCallback(null);
             mCamera.stopPreview();
@@ -160,5 +204,14 @@ public class PictureFragment extends Fragment implements OnClickListener, Surfac
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         releaseCamera();
+    }
+
+
+    //重写父类onPause方法
+    @Override
+    public void onPause() {
+        super.onPause();
+        releaseCamera();
+        Log.d("click", "camerarelease");
     }
 }

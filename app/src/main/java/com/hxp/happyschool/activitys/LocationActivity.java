@@ -115,12 +115,10 @@ public class LocationActivity extends Activity implements OnClickListener {
         //预加载WifiFragment+LifeFragment+PictureFragment+ChartFragment
         getFragmentManager().beginTransaction().add(R.id.linearlayout_fragmentContent_location, mWifiFragment).commit();
         getFragmentManager().beginTransaction().add(R.id.linearlayout_fragmentContent_location, mBluetoothFragment).commit();
-        getFragmentManager().beginTransaction().add(R.id.linearlayout_fragmentContent_location, mPictureFragment).commit();
 
         //隐藏WifiFragment+LifeFragment+PictureFragment+ChartFragment
         getFragmentManager().beginTransaction().hide(mWifiFragment).commit();
         getFragmentManager().beginTransaction().hide(mBluetoothFragment).commit();
-        getFragmentManager().beginTransaction().hide(mPictureFragment).commit();
     }
 
 
@@ -185,7 +183,6 @@ public class LocationActivity extends Activity implements OnClickListener {
 
             case R.id.linearlayout_pictureTab_location:
                 if (isPictureClicked) {
-                    Log.d("click", "Pictureclick");
 
                     //恢复初始颜色
                     backInitColor();
@@ -194,11 +191,10 @@ public class LocationActivity extends Activity implements OnClickListener {
                     img_pictureTab_location.setImageResource(R.drawable.ic_buttombar_picture_location_pressed);
                     tv_pictureTab_location.setTextColor(getResources().getColor(R.color.primaryBlue));
 
-                    //恢复初始fragment显示状态
-                    backInitFragment();
-
                     //加载tab按下时Fragment的显示状态
+                    backInitFragment();
                     getFragmentManager().beginTransaction().show(mPictureFragment).commit();
+                    Log.d("click", "picturefragment");
 
                     //重置底部tab点击标记
                     isWifiClicked = true;
@@ -219,8 +215,6 @@ public class LocationActivity extends Activity implements OnClickListener {
                     img_chartTab_location.setImageResource(R.drawable.ic_buttombar_chart_location_pressed);
                     tv_chartTab_location.setTextColor(getResources().getColor(R.color.primaryBlue));
 
-                    /*backInitFragment();
-                    getFragmentManager().beginTransaction().show(mEntertainmentFragment).commit();*/
 
                     //重置底部tab点击标记
                     isWifiClicked = true;
@@ -265,7 +259,24 @@ public class LocationActivity extends Activity implements OnClickListener {
     protected void onDestroy() {
         Log.d("click", "ondestroy");
         super.onDestroy();
-        mWifiFragment.onDetach();
-        mBluetoothFragment.onDetach();
+        mPictureFragment.releaseCamera();
+    }
+
+
+    //重写父类onPause方法
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getFragmentManager().beginTransaction().remove(mPictureFragment).commit();
+        Log.d("click", "remove");
+    }
+
+
+    //重写父类onResume方法
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getFragmentManager().beginTransaction().add(R.id.linearlayout_fragmentContent_location, mPictureFragment).commit();
+        Log.d("click", "onResume");
     }
 }

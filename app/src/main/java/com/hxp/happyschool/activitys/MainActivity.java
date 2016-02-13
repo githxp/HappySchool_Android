@@ -15,6 +15,7 @@ import com.hxp.happyschool.databases.DatabaseImplement;
 import com.hxp.happyschool.fragments.EntertainmentFragment;
 import com.hxp.happyschool.fragments.LifeFragment;
 import com.hxp.happyschool.fragments.StudyFragment;
+import com.hxp.happyschool.utils.FileOperate;
 
 
 /**
@@ -59,6 +60,9 @@ public class MainActivity extends Activity implements OnClickListener {
     //数据库实现类
     private DatabaseImplement mDatabaseImplement;
 
+    //文件操作类
+    private FileOperate mFileOperate;
+
 
     //重写父类onCreate方法
     @Override
@@ -69,6 +73,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
         //初始化控件和成员变量
         initParams();
+
+        //创建app文件夹
+        mFileOperate.createAppDirectory();
 
         //预执行一次学习tab点击
         linearlayout_studyTab_main.performClick();
@@ -113,6 +120,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
         //数据库实现类
         mDatabaseImplement = new DatabaseImplement(this.getApplicationContext());
+
+        //文件操作类
+        mFileOperate = new FileOperate();
 
         //添加顶部图片按钮点击事件侦听
         imgbtn_setting_main.setOnClickListener(this);
