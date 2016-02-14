@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import com.hxp.happyschool.R;
 import com.hxp.happyschool.adapters.WifiAdapter;
 import com.hxp.happyschool.beans.WifiBean;
+import com.hxp.happyschool.utils.HttpConnect;
 import com.hxp.happyschool.utils.WifiDetecter;
 
 import org.json.JSONArray;
@@ -57,6 +58,7 @@ public class WifiFragment extends Fragment implements OnClickListener, OnRefresh
     private RelativeLayout relativelayout_wifiLoading_wifi_location;
     private Button btn_openWifi_wifi_location;
     private SwipeRefreshLayout swiperefresh_wifiList_wifi_location;
+    private HttpConnect mHttpConnect;
 
 
     @Nullable
@@ -77,6 +79,7 @@ public class WifiFragment extends Fragment implements OnClickListener, OnRefresh
         relativelayout_wifiFail_wifi_location = (RelativeLayout) getView().findViewById(R.id.relativelayout_wifiFail_wifi_location);
         relativelayout_wifiLoading_wifi_location = (RelativeLayout) getView().findViewById(R.id.relativelayout_wifiLoading_wifi_location);
         swiperefresh_wifiList_wifi_location = (SwipeRefreshLayout) getView().findViewById(R.id.swiperefresh_wifiList_wifi_location);
+        mHttpConnect = new HttpConnect();
         swiperefresh_wifiList_wifi_location.setColorSchemeResources(R.color.primaryBlue, R.color.primaryGreen, R.color.primaryRed);
         swiperefresh_wifiList_wifi_location.setOnRefreshListener(this);
         btn_openWifi_wifi_location.setOnClickListener(this);
@@ -180,10 +183,7 @@ public class WifiFragment extends Fragment implements OnClickListener, OnRefresh
     //定义异步获取服务器wifi地址并显示内部类
     private class WifiAddressAsyncTask extends AsyncTask<List<WifiBean>, Void, List<WifiBean>> {
 
-
-        private BufferedReader mBufferedReader;
-        private StringBuffer mStringBuffer;
-
+        private String strHttpConnectResult;
 
         @Override
         protected List<WifiBean> doInBackground(List<WifiBean>... params) {
@@ -191,59 +191,53 @@ public class WifiFragment extends Fragment implements OnClickListener, OnRefresh
             //与服务器连接
             if (getActivity() != null) {
                 Log.d("click", "执行activity不为null获取网络线程");
-                try {
-                    URL mURL = new URL("http://121.43.116.174/class/Location/Location_class.php");
-                    HttpURLConnection mHttpURLConnection = (HttpURLConnection) mURL.openConnection();
-                    mHttpURLConnection.setRequestMethod("POST");
-                    mHttpURLConnection.setReadTimeout(5000);
-                    mHttpURLConnection.setDoOutput(true);
-                    OutputStream mOutputStream = mHttpURLConnection.getOutputStream();
-                    //组装要发送的json,格式为：数组包裹对象[{"mac":xxx,"mdb":xxx},{"mac":xxx,"mdb":xxx}...]
-                    JSONArray mJsonArraySend = new JSONArray();
-                    JSONObject mJsonObjectSend;
-                    for (int i = 0; i < params[0].size(); i++) {
-                        mJsonObjectSend = new JSONObject();
+
+                //组装要发送的json,格式为：数组包裹对象[{"mac":xxx,"mdb":xxx},{"mac":xxx,"mdb":xxx}...]
+                JSONArray mJsonArraySend = new JSONArray();
+                JSONObject mJsonObjectSend;
+                for (int i = 0; i < params[0].size(); i++) {
+                    mJsonObjectSend = new JSONObject();
+                    try {
                         mJsonObjectSend.put("mac", params[0].get(i).getMac());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
                         mJsonObjectSend.put("mdb", params[0].get(i).getMdb());
-                        mJsonArraySend.put(mJsonObjectSend);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+                    mJsonArraySend.put(mJsonObjectSend);
+                }
 
-                    mOutputStream.write(("json=" + mJsonArraySend.toString()).getBytes());
-                    Log.d("json:", "mac=" + mJsonArraySend.toString());
+                //进行网络连接并获取返回数据
+                strHttpConnectResult = mHttpConnect.httpConnect("http://121.43.116.174/class/Location/Location_Wifi_class.php", ("json=" + mJsonArraySend.toString()).getBytes());
 
-                    //获取服务器数据
-                    mBufferedReader = new BufferedReader(new InputStreamReader(mHttpURLConnection.getInputStream()));
-                    mStringBuffer = new StringBuffer();
-                    String str;
-                    while ((str = mBufferedReader.readLine()) != null) {
-                        mStringBuffer.append(str);
-                    }
-                    mBufferedReader.close();
-                    mOutputStream.close();
-                    //进行json解析
-                    Log.d("json", "json解析时");
-                    JSONArray mJsonArrayReceive = new JSONArray(mStringBuffer.toString());
-                    Log.d("jsondoc", mStringBuffer.toString());
-                    //保存json数据作为本地适配器数据源,格式为：(mac,地址,距离)
-                    for (int i = 0; i < params[0].size(); i++) {
-                        for (int k = 0; k < mJsonArrayReceive.length(); k++) {
-                            JSONObject mJsonObjectReceive = mJsonArrayReceive.getJSONObject(k);
-                            if (params[0].get(i).getMac().equals(mJsonObjectReceive.optString("mac"))) {
-                                params[0].get(i).setAddress(mJsonObjectReceive.optString("address"));
-                                params[0].get(i).setDistance(mJsonObjectReceive.optInt("distance"));
-                                break;
-                            }
-                        }
-                    }
-                    mHttpURLConnection.disconnect();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (ProtocolException e) {
-                    e.printStackTrace();
+                //对接收到的json进行解析
+                Log.d("json", "json解析时");
+                JSONArray mJsonArrayReceive = null;
+                try {
+                    mJsonArrayReceive = new JSONArray(strHttpConnectResult);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                }
+                Log.d("jsondoc", strHttpConnectResult);
+
+                //保存json数据作为本地适配器数据源,格式为：(mac,地址,距离)
+                for (int i = 0; i < params[0].size(); i++) {
+                    for (int k = 0; k < mJsonArrayReceive.length(); k++) {
+                        JSONObject mJsonObjectReceive = null;
+                        try {
+                            mJsonObjectReceive = mJsonArrayReceive.getJSONObject(k);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (params[0].get(i).getMac().equals(mJsonObjectReceive.optString("mac"))) {
+                            params[0].get(i).setAddress(mJsonObjectReceive.optString("address"));
+                            params[0].get(i).setDistance(mJsonObjectReceive.optInt("distance"));
+                            break;
+                        }
+                    }
                 }
                 mWifiBeanListOnPost = mWifiBeanListDoInBackground;
             } else {

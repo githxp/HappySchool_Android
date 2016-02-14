@@ -8,8 +8,6 @@ import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,15 +17,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.hxp.happyschool.R;
+import com.hxp.happyschool.activitys.Preview_PictureActivity;
 import com.hxp.happyschool.utils.FileOperate;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * 图像定位Fragment
@@ -125,6 +124,21 @@ public class PictureFragment extends Fragment implements OnClickListener, Surfac
 
                 //开始预览Camera
                 //startCameraPreview(mCamera, mSurfaceHolder);
+
+                //跳转到上传前预览Activity
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        try {
+                            sleep(2000);
+                            startActivity(new Intent(getActivity(), Preview_PictureActivity.class));
+                            Log.d("click", "fragment");
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
                 break;
 
             case R.id.surfaceview_camera_picture_location:
