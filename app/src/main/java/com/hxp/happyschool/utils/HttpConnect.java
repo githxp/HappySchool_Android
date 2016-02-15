@@ -17,6 +17,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by hxp on 16-2-14.
@@ -27,9 +28,17 @@ public class HttpConnect {
     private BufferedReader mBufferedReader;
     private StringBuffer mStringBuffer;
     private String strHttpConnectResult;
+    //边界符
+    private String strBoundary;
+    //换行符
+    private String strChangeLine;
+    //boundary前缀
+    private String strPrefix;
+
 
     //定义网络连接方法(目标url,要写入的json数据)
     public String httpConnect(String url, byte[] datas) {
+        Log.d("click", "进入byte构造函数");
         try {
             //建立http连接
             URL mURL = new URL(url);
@@ -70,7 +79,17 @@ public class HttpConnect {
 
 
     //定义网络连接方法(目标url,要写入的文件数据)
-    public String httpConnect(String url, String filename, byte[] datas) {
+    public String httpConnect(String url, String name, String filepath) {
+        Log.d("click", "进入三个参数的构造函数");
+
+        //设置边界符
+        strBoundary = UUID.randomUUID().toString();
+        Log.d("click", "UUID是：" + strBoundary);
+        //设置换行符
+        strChangeLine = "\r\n";
+        //设置boundary前缀
+        strPrefix = "--";
+
         try {
             //建立http连接
             URL mURL = new URL(url);
@@ -80,23 +99,32 @@ public class HttpConnect {
             mHttpURLConnection.setRequestMethod("POST");
             mHttpURLConnection.setReadTimeout(5000);
             mHttpURLConnection.setDoOutput(true);
-
-            //建立要写入数据流对象
-            File mFile = new File(filename);
-            FileInputStream mFileInputStream = new FileInputStream(mFile);
+            mHttpURLConnection.setDoInput(true);
+            mHttpURLConnection.setUseCaches(false);
+            mHttpURLConnection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + strBoundary);
 
             //获取输出流对象
             OutputStream mOutputStream = mHttpURLConnection.getOutputStream();
 
-            //写入post请求头
-            mOutputStream.write(datas);
+            //创建post
+            mOutputStream.write((strPrefix + strBoundary + strChangeLine).getBytes());
+            mOutputStream.write(("Content-Disposition: form-data; name=\"" + name + "\"; filename=\"" + filepath.substring(filepath.lastIndexOf("/") + 1) + "\"" + strChangeLine).getBytes());
+            Log.d("click", "Content-Disposition: form-data; name=\"" + name + "\"; filename=\"" + filepath.substring(filepath.lastIndexOf("/") + 1) + "\"");
 
-            //写入输出流
+            //写入要发送的文件内容
+            File mFile = new File(filepath);
+            FileInputStream mFileInputStream = new FileInputStream(mFile);
             byte[] byt = new byte[1024 * 2];
             int len;
             while ((len = mFileInputStream.read(byt)) != -1) {
                 mOutputStream.write(byt, 0, len);
             }
+
+            //写入换行
+            mOutputStream.write(strChangeLine.getBytes());
+
+            //写入结束标记
+            mOutputStream.write((strPrefix + strBoundary + strPrefix + strChangeLine).getBytes());
 
 
             //获取服务器数据
@@ -109,8 +137,9 @@ public class HttpConnect {
             strHttpConnectResult = mStringBuffer.toString();
 
             //关闭流和连接
-            mBufferedReader.close();
             mOutputStream.close();
+            mFileInputStream.close();
+            mBufferedReader.close();
             mHttpURLConnection.disconnect();
         } catch (MalformedURLException e) {
             e.printStackTrace();

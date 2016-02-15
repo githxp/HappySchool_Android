@@ -42,5 +42,12 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_previewok_picture_location" />
         </LinearLayout>
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="状态：" />
 </LinearLayout>
