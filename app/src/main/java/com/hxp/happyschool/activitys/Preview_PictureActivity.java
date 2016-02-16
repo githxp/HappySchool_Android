@@ -57,7 +57,7 @@ public class Preview_PictureActivity extends Activity implements OnClickListener
         //设置imagview显示预览图
         pictureFilePath = mFileOperate.mPath + File.separator + "Location" + File.separator + "Picture" + File.separator + "temp.jpg";
         mBitmap = BitmapFactory.decodeFile(pictureFilePath);
-        Log.d("click","文件路径"+pictureFilePath);
+        Log.d("click","文件路径:"+pictureFilePath);
         img_preview_picture_location.setImageBitmap(mBitmap);
     }
 

@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -104,27 +105,28 @@ public class HttpConnect {
             mHttpURLConnection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + strBoundary);
 
             //获取输出流对象
-            OutputStream mOutputStream = mHttpURLConnection.getOutputStream();
+            DataOutputStream mDataOutputStream = new DataOutputStream(mHttpURLConnection.getOutputStream());
 
             //创建post
-            mOutputStream.write((strPrefix + strBoundary + strChangeLine).getBytes());
-            mOutputStream.write(("Content-Disposition: form-data; name=\"" + name + "\"; filename=\"" + filepath.substring(filepath.lastIndexOf("/") + 1) + "\"" + strChangeLine).getBytes());
-            Log.d("click", "Content-Disposition: form-data; name=\"" + name + "\"; filename=\"" + filepath.substring(filepath.lastIndexOf("/") + 1) + "\"");
+            mDataOutputStream.writeBytes(strPrefix + strBoundary + strChangeLine);
+            mDataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" + name + "\"; filename=\"" + filepath.substring(filepath.lastIndexOf("/") + 1) + "\"" + strChangeLine);
+            mDataOutputStream.writeBytes(strChangeLine);
 
-            //写入要发送的文件内容
+            //获取要发送的文件输入流并写入输出流
             File mFile = new File(filepath);
             FileInputStream mFileInputStream = new FileInputStream(mFile);
             byte[] byt = new byte[1024 * 2];
             int len;
             while ((len = mFileInputStream.read(byt)) != -1) {
-                mOutputStream.write(byt, 0, len);
+                mDataOutputStream.write(byt, 0, len);
             }
 
             //写入换行
-            mOutputStream.write(strChangeLine.getBytes());
+            mDataOutputStream.writeBytes(strChangeLine);
 
             //写入结束标记
-            mOutputStream.write((strPrefix + strBoundary + strPrefix + strChangeLine).getBytes());
+            mDataOutputStream.writeBytes(strPrefix + strBoundary + strPrefix + strChangeLine);
+            mDataOutputStream.flush();
 
 
             //获取服务器数据
@@ -135,9 +137,9 @@ public class HttpConnect {
                 mStringBuffer.append(str);
             }
             strHttpConnectResult = mStringBuffer.toString();
-
+            Log.d("click", "httpresut:" + strHttpConnectResult);
             //关闭流和连接
-            mOutputStream.close();
+            mDataOutputStream.close();
             mFileInputStream.close();
             mBufferedReader.close();
             mHttpURLConnection.disconnect();
