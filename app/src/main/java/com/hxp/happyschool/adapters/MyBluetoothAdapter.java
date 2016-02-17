@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hxp.happyschool.R;
+import com.hxp.happyschool.beans.BluetoothBean;
 import com.hxp.happyschool.beans.WifiBean;
 
 import java.util.List;
@@ -24,13 +25,13 @@ public class MyBluetoothAdapter extends Adapter<BluetoothViewHolder> {
 
     private LayoutInflater mLayoutInflater;
     private Context mContext;
-    //private List<WifiBean> mBeans;
-    //private WifiBean mWifiBean;
+    private List<BluetoothBean> mBeans;
+    private BluetoothBean mBluetoothBean;
 
 
-    public MyBluetoothAdapter(Context context) {
+    public MyBluetoothAdapter(Context context, List<BluetoothBean> beans) {
         this.mContext = context;
-        //this.mBeans = beans;
+        this.mBeans = beans;
         mLayoutInflater = LayoutInflater.from(context);
     }
 
@@ -43,14 +44,14 @@ public class MyBluetoothAdapter extends Adapter<BluetoothViewHolder> {
 
     @Override
     public void onBindViewHolder(BluetoothViewHolder holder, int position) {
-        //mWifiBean = mBeans.get(position);
-        holder.tv_name_bluetoth_location.setText("蓝牙1");
+        mBluetoothBean = mBeans.get(position);
+        holder.tv_name_bluetoth_location.setText(mBluetoothBean.getName());
         holder.tv_distance_bluetooth_location.setText("12米");
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return mBeans.size();
     }
 
 }

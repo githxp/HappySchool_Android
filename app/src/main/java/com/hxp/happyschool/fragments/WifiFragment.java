@@ -160,7 +160,7 @@ public class WifiFragment extends Fragment implements OnClickListener, OnRefresh
     }
 
 
-    //实现OnRefreshListener接口方法
+    //实现OnRefreshListener接口
     @Override
     public void onRefresh() {
         if (mWifiDetecter.getWifiStatus() == 1 || mWifiDetecter.getWifiStatus() == 0) {
