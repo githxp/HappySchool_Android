@@ -13,5 +13,11 @@
     <string name="bluetoothLocationButtomBar">蓝牙位置</string>
     <string name="pictureLocationButtomBar">图像位置</string>
     <string name="chartLocationButtomBar">位置地图</string>
+    <string name="homeClassUnionButtomBar">首页</string>
+    <string name="uploadClassUnionButtomBar">上传</string>
+    <string name="downloadClassUnionButtomBar">下载</string>
+    <string name="personClassUnionButtomBar">我的</string>
+    <string name="selectUploadFileClassUnion">选择文件</string>
+    <string name="fileScanCliassUnion">正在扫描</string>
 
 </resources>

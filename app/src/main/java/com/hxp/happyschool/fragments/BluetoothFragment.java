@@ -52,6 +52,7 @@ public class BluetoothFragment extends Fragment implements OnClickListener, OnRe
     private BluetoothBean mBluetoothBean;
     private MyBluetoothAdapter mMyBluetoothAdapter;
     private Set<BluetoothDevice> mBluetoothDeviceSet;
+    private Intent mIntent;
 
 
     @Nullable
@@ -93,11 +94,13 @@ public class BluetoothFragment extends Fragment implements OnClickListener, OnRe
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                mIntent = intent;
                 if (intent.getAction().equals(BluetoothDevice.ACTION_FOUND)) {
                     BluetoothDevice mBluetoothDeviceNew = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     if (mBluetoothDeviceNew.getBondState() != BluetoothDevice.BOND_BONDED) {
                         mBluetoothBean = new BluetoothBean();
                         mBluetoothBean.setName(mBluetoothDeviceNew.getName());
+                        mBluetoothBean.setRssi(intent.getExtras().getString(BluetoothDevice.EXTRA_RSSI));
                         mBluetoothBeanList.add(mBluetoothBean);
                         mMyBluetoothAdapter.notifyDataSetChanged();
                         if (relativelayout_bluetoothLoading_bluetooth_location.getVisibility() == View.VISIBLE) {
@@ -141,6 +144,7 @@ public class BluetoothFragment extends Fragment implements OnClickListener, OnRe
                 for (BluetoothDevice mBluetoothDevice : mBluetoothDeviceSet) {
                     mBluetoothBean = new BluetoothBean();
                     mBluetoothBean.setName(mBluetoothDevice.getName());
+                    mBluetoothBean.setRssi(mIntent.getExtras().getString(BluetoothDevice.EXTRA_RSSI));
                     mBluetoothBeanList.add(mBluetoothBean);
                 }
             }

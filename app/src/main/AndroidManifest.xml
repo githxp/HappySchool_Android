@@ -69,6 +69,7 @@
         <activity android:name=".activitys.WebLogActivity"></activity>
         <activity android:name=".activitys.HotNewsActivity"></activity>
         <activity android:name=".activitys.Preview_PictureActivity" />
+        <activity android:name=".activitys.SelectUploadFileActivity" />
 
         <service android:name="com.amap.api.location.APSService"></service>
     </application>

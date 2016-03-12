@@ -16,7 +16,7 @@ import com.hxp.happyschool.beans.WifiBean;
 import java.util.List;
 
 
-/**
+/**蓝牙适配器
  * Created by hxp on 16-1-23.
  */
 
@@ -46,7 +46,7 @@ public class MyBluetoothAdapter extends Adapter<BluetoothViewHolder> {
     public void onBindViewHolder(BluetoothViewHolder holder, int position) {
         mBluetoothBean = mBeans.get(position);
         holder.tv_name_bluetoth_location.setText(mBluetoothBean.getName());
-        holder.tv_distance_bluetooth_location.setText("12米");
+        holder.tv_distance_bluetooth_location.setText("1米");
     }
 
     @Override

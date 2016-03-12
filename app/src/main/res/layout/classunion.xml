@@ -1,11 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <include layout="@layout/apptitle_mould" />
+
+    <LinearLayout
+        android:id="@+id/linearlayout_fragmentContent_classunion"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="课堂联盟正在开发中" />
+        android:orientation="horizontal"
+        android:paddingBottom="6dp">
 
-</android.support.design.widget.CoordinatorLayout>
+        <LinearLayout
+            android:id="@+id/linearlayout_homeTab_classunion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/img_homeTab_classunion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_buttombar_home_unpressed" />
+
+                <TextView
+                    android:id="@+id/tv_homeTab_classunion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_homeTab_classunion"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/homeClassUnionButtomBar"
+                    android:textColor="@color/primaryGrey"
+                    android:textSize="10sp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_uploadTab_classunion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/img_uploadTab_classunion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_buttombar_upload_unpressed" />
+
+                <TextView
+                    android:id="@+id/tv_uploadTab_classunion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_uploadTab_classunion"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/uploadClassUnionButtomBar"
+                    android:textColor="@color/primaryGrey"
+                    android:textSize="10sp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_downloadTab_classunion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/img_downloadTab_classunion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_buttombar_download_unpressed" />
+
+                <TextView
+                    android:id="@+id/tv_downloadTab_classunion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_downloadTab_classunion"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/downloadClassUnionButtomBar"
+                    android:textColor="@color/primaryGrey"
+                    android:textSize="10sp" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_personTab_classunion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/img_personTab_classunion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_buttombar_person_unpressed" />
+
+                <TextView
+                    android:id="@+id/tv_personTab_classunion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_personTab_classunion"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/personClassUnionButtomBar"
+                    android:textColor="@color/primaryGrey"
+                    android:textSize="10sp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
