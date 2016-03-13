@@ -19,5 +19,6 @@
     <string name="personClassUnionButtomBar">我的</string>
     <string name="selectUploadFileClassUnion">选择文件</string>
     <string name="fileScanCliassUnion">正在扫描</string>
+    <string name="uploadFileClassUnion">上传</string>
 
 </resources>

@@ -4,14 +4,15 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hxp.happyschool.R;
 import com.hxp.happyschool.beans.FileScanBean;
-import com.hxp.happyschool.beans.LifeBean;
 
 import java.util.List;
 
@@ -21,13 +22,14 @@ import java.util.List;
 public class SelectUploadFileAdapter extends RecyclerView.Adapter<SelectUploadFileViewHolder_ClassUnion> {
     private LayoutInflater mLayoutInflater;
     private List<FileScanBean> datas;
-    private OnItemClickListener mOnItemClickListener;
 
 
     //创建单击回调接口
     public interface OnItemClickListener {
         void OnItemClick(View view, int position);
     }
+
+    private OnItemClickListener mOnItemClickListener;
 
 
     //创建回调单击方法
@@ -48,6 +50,7 @@ public class SelectUploadFileAdapter extends RecyclerView.Adapter<SelectUploadFi
     public SelectUploadFileViewHolder_ClassUnion onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mLayoutInflater.inflate(R.layout.selectuploadfileitem, parent, false);
         SelectUploadFileViewHolder_ClassUnion mSelectUploadFileViewHolder_ClassUnion = new SelectUploadFileViewHolder_ClassUnion(view);
+
         return mSelectUploadFileViewHolder_ClassUnion;
     }
 
@@ -56,7 +59,7 @@ public class SelectUploadFileAdapter extends RecyclerView.Adapter<SelectUploadFi
     public void onBindViewHolder(final SelectUploadFileViewHolder_ClassUnion holder, final int position) {
         holder.tv_selectFile_classunion.setText(datas.get(position).getFileName());
         holder.checkbox_selectFile_classunion.setChecked(datas.get(position).isChecked());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mOnItemClickListener != null) {

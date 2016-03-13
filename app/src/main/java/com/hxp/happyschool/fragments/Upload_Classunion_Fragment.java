@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.hxp.happyschool.R;
 import com.hxp.happyschool.activitys.SelectUploadFileActivity;
@@ -57,10 +58,25 @@ public class Upload_Classunion_Fragment extends Fragment implements OnClickListe
         switch (v.getId()) {
             case R.id.btn_selectUploadFile_clssunion:
                 Intent intent = new Intent(getActivity(), SelectUploadFileActivity.class);
-                startActivityForResult(intent,100);
+                startActivityForResult(intent, 100);
                 break;
 
             default:
+                break;
+        }
+    }
+
+
+    //重写父类onActivityResult方法
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case 200:
+                Toast.makeText(getActivity(), "搜索完成", Toast.LENGTH_SHORT).show();
+                break;
+
+            default:
+
                 break;
         }
     }
